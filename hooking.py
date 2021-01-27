@@ -12,7 +12,7 @@ class Hooking(Resource):
         return {
             "type": True,
             "message": "success",
-            "elapsed_time_ms": elapsed_time,
+            "elapsed_time_ms": 0,
             "len": 0,
             "result": "testing"
         }

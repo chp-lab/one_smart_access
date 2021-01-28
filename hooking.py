@@ -37,6 +37,12 @@ class Hooking(Resource):
                     "type": "text",
                     "message": "ต้องการดูการจองของฉัน",
                     "payload": "list_all_booking"
+                },
+                {
+                    "label": "คำเชิญ",
+                    "type": "text",
+                    "message": "ขอดูคำเชิญ",
+                    "payload": "invite"
                 }
                 ]
         }
@@ -127,7 +133,7 @@ class Hooking(Resource):
                     print(TAG, "list all access")
                     cmd = """SELECT bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
                     FROM bookings 
-                    WHERE bookings.one_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND eject_at IS NULL
+                    WHERE bookings.one_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND bookings.eject_at IS NULL
                     ORDER BY bookings.meeting_start""" %(email)
                     res = database.getData(cmd)
                     print(TAG, "res=", res)
@@ -140,6 +146,34 @@ class Hooking(Resource):
                             reply_msg = reply_msg + """%s.ห้อง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
                                            %(i + 1, tmp_list['room_num'], tmp_list['agenda'],
                                              tmp_list['meeting_start'], tmp_list['meeting_end'])
+
+                        payload = {
+                            "to": user_id,
+                            "bot_id": bot_id,
+                            "type": "text",
+                            "message": reply_msg,
+                            "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
+                        }
+                        r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
+                        print(TAG, r.text)
+                        self.menu_send(user_id, bot_id)
+                elif (data['message']['data'] == "invite"):
+                    print(TAG, "list all valid invite")
+                    cmd = """SELECT bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end FROM bookings
+                    LEFT JOIN guests ON bookings.booking_number = guests.booking_number
+                    WHERE guests.guest_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND bookings.eject_at IS NULL""" %(email)
+
+                    res = database.getData(cmd)
+                    print(TAG, "res=", res)
+                    if (res[1] == 200):
+                        reply_msg = """คุณมี %s คำเชิญ """ % (res[0]['len'])
+                        booking_list = res[0]['result']
+                        for i in range(res[0]['len']):
+                            print(TAG, "booking:", booking_list[i])
+                            tmp_list = booking_list[i]
+                            reply_msg = reply_msg + """%s.ห้อง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
+                                        % (i + 1, tmp_list['room_num'], tmp_list['agenda'],
+                                           tmp_list['meeting_start'], tmp_list['meeting_end'])
 
                         payload = {
                             "to": user_id,

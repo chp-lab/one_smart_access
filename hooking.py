@@ -16,32 +16,36 @@ class Hooking(Resource):
             user_id = data['source']['user_id']
             print(TAG, "bot_id=", bot_id)
             print(TAG, "user_id=", user_id)
+            if(data['message']['data'] == "access_req"):
+                print(TAG, "access req recv")
 
-            req_body = {
-                "to": user_id,
-                "bot_id": bot_id,
-                "message": "โปรเลือกบริการ",
-                "quick_reply":
-                    [{
-                        "label": "ระบบจัดการห้องประชุม",
-                        "type": "webview",
-                        "url": web_vue_url1,
-                        "size": "tall",
-                        "sign": "false",
-                        "onechat_token": "true"
-                    },
-                    {
-                        "label": "แสดง QR Code",
-                        "type": "text",
-                        "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
-                        "payload": "access_req"
-                    }
-                    ]
-            }
+            else:
+                print(TAG, "menu sending")
+                req_body = {
+                    "to": user_id,
+                    "bot_id": bot_id,
+                    "message": "โปรเลือกบริการ",
+                    "quick_reply":
+                        [{
+                            "label": "ระบบจัดการห้องประชุม",
+                            "type": "webview",
+                            "url": web_vue_url1,
+                            "size": "tall",
+                            "sign": "false",
+                            "onechat_token": "true"
+                        },
+                        {
+                            "label": "แสดง QR Code",
+                            "type": "text",
+                            "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
+                            "payload": "access_req"
+                        }
+                        ]
+                }
 
-            header = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
-            result = requests.post(onechat_url1, json=req_body, headers=header)
-            print(TAG, result.text)
+                header = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
+                result = requests.post(onechat_url1, json=req_body, headers=header)
+                print(TAG, result.text)
         else:
             print(TAG, "unkown data")
 

@@ -29,7 +29,16 @@ class Hooking(Resource):
                         "size": "tall",
                         "sign": "false",
                         "onechat_token": "true"
-                    }]
+                    },
+                    {
+                        "label": "แสดง QR Code",
+                        "type": "webview",
+                        "url": web_vue_url1,
+                        "size": "tall",
+                        "sign": "false",
+                        "onechat_token": "true"
+                    }
+                    ]
             }
 
             header = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}

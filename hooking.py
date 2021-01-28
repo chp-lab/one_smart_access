@@ -97,9 +97,10 @@ class Hooking(Resource):
                         booking_list = res[0]['result']
                         for i in range(res[0]['len']):
                             print(TAG, "booking:", booking_list[i])
-                            booking_list = booking_list + """%s.ห้อง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
-                                           %(i + 1, booking_list['room_num'], booking_list['agenda'],
-                                             booking_list['meeting_start'], booking_list['meeting_end'])
+                            tmp_list = booking_list[i]
+                            reply_msg = reply_msg + """%s.ห้อง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
+                                           %(i + 1, tmp_list['room_num'], tmp_list['agenda'],
+                                             tmp_list['meeting_start'], tmp_list['meeting_end'])
 
                         payload = {
                             "to": user_id,

@@ -92,7 +92,7 @@ class Hooking(Resource):
                     WHERE bookings.one_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP)""" %(email)
                     res = database.getData(cmd)
                     print(TAG, "res=", res)
-                    if (res.status_code == 200):
+                    if (res[1] == 200):
                         booking_list = res[0]['result']
                         for i in range(res[0]['len']):
                             print(TAG, "booking:", booking_list[i])
@@ -105,7 +105,8 @@ class Hooking(Resource):
                             "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
                         }
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
-
+                else:
+                    print(TAG, "Unknow service")
             else:
                 print(TAG, "menu sending")
                 req_body = {

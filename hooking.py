@@ -36,7 +36,7 @@ class Hooking(Resource):
 
                     print(TAG, "res=", res)
 
-                    if(res[0][len] == 0):
+                    if(res[0]['len'] == 0):
                         payload = {
                             "to": user_id,
                             "bot_id": bot_id,

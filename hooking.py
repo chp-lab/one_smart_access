@@ -7,13 +7,49 @@ from database import Database
 from module import Module
 
 class Hooking(Resource):
+    onechat_uri = "https://chat-api.one.th"
+    onechat_dev_token = "Bearer Af58c5450f3b45c71a97bc51c05373ecefabc49bd2cd94f3c88d5b844813e69a17e26a828c2b64ef889ef0c10e2aee347"
+    def menu_send(self, user_id, bot_id):
+        TAG = "menu_send:"
+        onechat_url1 = self.onechat_uri + '/message/api/v1/push_quickreply'
+        web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
+        req_body = {
+            "to": user_id,
+            "bot_id": bot_id,
+            "message": "โปรเลือกบริการ",
+            "quick_reply":
+                [{
+                    "label": "ระบบจัดการห้องประชุม",
+                    "type": "webview",
+                    "url": web_vue_url1,
+                    "size": "tall",
+                    "sign": "false",
+                    "onechat_token": "true"
+                },
+                    {
+                        "label": "แสดง QR Code",
+                        "type": "text",
+                        "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
+                        "payload": "access_req"
+                    },
+                    {
+                        "label": "การจองของคุณ",
+                        "type": "text",
+                        "message": "ต้องการดูการจองของฉัน",
+                        "payload": "list_all_booking"
+                    }
+                ]
+        }
+
+        headers = {"Authorization": self.onechat_dev_token, "Content-Type": "application/json"}
+        result = requests.post(onechat_url1, json=req_body, headers=headers)
+        print(TAG, result.text)
+
     def post(self):
         TAG = "Hooking:"
         database = Database()
         module = Module()
-        onechat_uri = "https://chat-api.one.th"
-        onechat_url1 = onechat_uri + '/message/api/v1/push_quickreply'
-        web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
+        onechat_uri = self.onechat_uri
         data = request.json
         onechat_dev_token = "Bearer Af58c5450f3b45c71a97bc51c05373ecefabc49bd2cd94f3c88d5b844813e69a17e26a828c2b64ef889ef0c10e2aee347"
         qr_code_api = "https://api.qrserver.com/v1/create-qr-code/"
@@ -51,6 +87,7 @@ class Hooking(Resource):
                         headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", json=payload, headers=headers)
                         print(TAG, r.text)
+                        self.menu_send(user_id, bot_id)
                         return module.wrongAPImsg()
 
                     booking_number = res[0]['result'][0]['booking_number']
@@ -84,6 +121,7 @@ class Hooking(Resource):
                             "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
                         }
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
+                        self.menu_send(user_id, bot_id)
                         print(TAG, r.text)
                 elif(data['message']['data'] == "list_all_booking"):
                     print(TAG, "list all access")
@@ -111,41 +149,13 @@ class Hooking(Resource):
                         }
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
                         print(TAG, r.text)
+                        self.menu_send(user_id, bot_id)
                 else:
                     print(TAG, "Unknow service")
             else:
+                self.menu_send(user_id, bot_id)
                 print(TAG, "menu sending")
-                req_body = {
-                    "to": user_id,
-                    "bot_id": bot_id,
-                    "message": "โปรเลือกบริการ",
-                    "quick_reply":
-                        [{
-                            "label": "ระบบจัดการห้องประชุม",
-                            "type": "webview",
-                            "url": web_vue_url1,
-                            "size": "tall",
-                            "sign": "false",
-                            "onechat_token": "true"
-                        },
-                        {
-                            "label": "แสดง QR Code",
-                            "type": "text",
-                            "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
-                            "payload": "access_req"
-                        },
-                        {
-                            "label": "การจองของคุณ",
-                            "type": "text",
-                            "message": "ต้องการดูการจองของฉัน",
-                            "payload": "list_all_booking"
-                        }
-                        ]
-                }
 
-                headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
-                result = requests.post(onechat_url1, json=req_body, headers=headers)
-                print(TAG, result.text)
         else:
             print(TAG, "unkown data")
 

@@ -32,6 +32,7 @@ class Hooking(Resource):
                     ORDER BY booking.meeting_start
                     LIMIT 1""" %(email)
 
+                    database = Database()
                     res = database.getData(cmd)
 
                     print(TAG, "res=", res)

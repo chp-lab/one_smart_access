@@ -73,7 +73,8 @@ class Hooking(Resource):
                         ]
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", files=files, data=payload, headers=headers)
                         print(TAG, r.text)
-                        reply_msg = """ห้องประชุม %s เหตุผล %s เวลาเริ่มการประชุม %s เวลาสิ้นสุดการประชุม %s แสกน QR Code หน้าห้องประชุมเมื่อถึงเวลา""" \
+                        reply_msg = """ห้อง %s เหตุผล %s เวลาเริ่ม %s เวลาสิ้นสุด %s 
+                        แสกน QR Code หน้าห้องเมื่อถึงเวลา""" \
                                     %(booking_data['room_num'], booking_data['agenda'], booking_data['meeting_start'], booking_data['meeting_end'])
                         payload = {
                             "to": user_id,

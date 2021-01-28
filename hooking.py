@@ -16,8 +16,9 @@ class Hooking(Resource):
             user_id = data['source']['user_id']
             print(TAG, "bot_id=", bot_id)
             print(TAG, "user_id=", user_id)
-            if(data['message']['data'] == "access_req"):
-                print(TAG, "access req recv")
+            if('data' in data['message']):
+                if(data['message']['data'] == "access_req"):
+                    print(TAG, "access req recv")
 
             else:
                 print(TAG, "menu sending")

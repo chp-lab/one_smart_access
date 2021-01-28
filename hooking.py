@@ -6,7 +6,8 @@ import requests
 class Hooking(Resource):
     def post(self):
         TAG = "Hooking:"
-        onechat_url1 = 'https://chat-api.one.th/message/api/v1/push_quickreply'
+        onechat_uri = "https://chat-api.one.th"
+        onechat_url1 = onechat_uri + '/message/api/v1/push_quickreply'
         web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
         data = request.json
         onechat_dev_token = "Bearer Af58c5450f3b45c71a97bc51c05373ecefabc49bd2cd94f3c88d5b844813e69a17e26a828c2b64ef889ef0c10e2aee347"
@@ -27,9 +28,16 @@ class Hooking(Resource):
                     print(TAG, "qr code generating...")
                     result = requests.get(qr_code_api)
                     if(result.status_code == 200):
+                        file_dir = "./"
+                        file_name = "tmp_qr.png"
                         print(TAG, "complete")
-                        with open("./tmp_qr.png", 'wb') as f:
+                        with open(file_dir + file_name, 'wb') as f:
                             f.write(result.content)
+                        with open(file_dir + file_name, 'rb') as f:
+                            data = {"to": user_id, "bot_id": bot_id, "type": "file"}
+                            header = {"Authorization": onechat_dev_token, "Content-Type": "multipart/form-data"}
+                            r = requests.post(onechat_uri + "/message/api/v1/push_message", files={'file': f}, data=data)
+                            print(TAG, r.text)
             else:
                 print(TAG, "menu sending")
                 req_body = {

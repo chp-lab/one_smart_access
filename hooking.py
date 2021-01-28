@@ -93,15 +93,19 @@ class Hooking(Resource):
                     res = database.getData(cmd)
                     print(TAG, "res=", res)
                     if (res[1] == 200):
+                        reply_msg = """คุณมี %s การจอง """ %(res[0]['len'])
                         booking_list = res[0]['result']
                         for i in range(res[0]['len']):
                             print(TAG, "booking:", booking_list[i])
+                            booking_list = booking_list + """%s.ห้อง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
+                                           %(i + 1, booking_list['room_num'], booking_list['agenda'],
+                                             booking_list['meeting_start'], booking_list['meeting_end'])
 
                         payload = {
                             "to": user_id,
                             "bot_id": bot_id,
                             "type": "text",
-                            "message": "กำลังพัฒนาระบบ",
+                            "message": booking_list,
                             "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
                         }
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)

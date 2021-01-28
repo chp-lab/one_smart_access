@@ -26,7 +26,10 @@ class Hooking(Resource):
                     qr_code_api = qr_code_api + """?data={"booking_number":%s,"one_id":"%s"}""" %(booking_number, email)
                     print(TAG, "qr code generating...")
                     result = requests.get(qr_code_api)
-                    print(result.status_code)
+                    if(result.status_code == 200):
+                        print(TAG, "complete")
+                        with open("./tmp_qr.png", 'wb') as f:
+                            f.write(result.content)
             else:
                 print(TAG, "menu sending")
                 req_body = {

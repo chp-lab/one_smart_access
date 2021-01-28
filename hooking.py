@@ -1,7 +1,9 @@
+# -- coding: utf-8 --
+
 from flask_restful import Resource, reqparse
 from flask import Flask, request, jsonify
 import requests
-# -- coding: utf-8 --
+from database import Database
 
 class Hooking(Resource):
     def post(self):
@@ -24,6 +26,16 @@ class Hooking(Resource):
             if('data' in data['message']):
                 if(data['message']['data'] == "access_req"):
                     print(TAG, "access req recv")
+
+                    cmd = """SELECT booking.booking_number FROM booking 
+                    WHERE (booking.meeting_end > (CURRENT_TIMESTAMP)) AND (booking.one_id = "chatpeth.ke@one.th") 
+                    ORDER BY booking.meeting_start 
+                    LIMIT 1"""
+
+                    res = database.getData(cmd)
+
+                    print(TAG, "res=", res)
+
                     qr_code_api = qr_code_api + """?data={"booking_number":%s,"one_id":"%s"}""" %(booking_number, email)
                     print(TAG, "qr code generating...")
                     result = requests.get(qr_code_api)

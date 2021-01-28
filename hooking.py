@@ -10,16 +10,23 @@ class Hooking(Resource):
         web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
         data = request.json
         onechat_dev_token = "Bearer Af58c5450f3b45c71a97bc51c05373ecefabc49bd2cd94f3c88d5b844813e69a17e26a828c2b64ef889ef0c10e2aee347"
+        qr_code_api = "https://api.qrserver.com/v1/create-qr-code/"
+
         print(TAG, data)
         if(data['event'] == "message"):
             bot_id = data['bot_id']
             user_id = data['source']['user_id']
+            booking_number = 1
+            email = data['source']['email']
             print(TAG, "bot_id=", bot_id)
             print(TAG, "user_id=", user_id)
             if('data' in data['message']):
                 if(data['message']['data'] == "access_req"):
                     print(TAG, "access req recv")
-
+                    qr_code_api = qr_code_api + """?data={"booking_number":%s,"one_id":"%s"}""" %(booking_number, email)
+                    print(TAG, "qr code generating...")
+                    result = requests.get(qr_code_api)
+                    print(result.status_code)
             else:
                 print(TAG, "menu sending")
                 req_body = {

@@ -9,6 +9,7 @@ from module import Module
 class Hooking(Resource):
     def post(self):
         TAG = "Hooking:"
+        database = Database()
         module = Module()
         onechat_uri = "https://chat-api.one.th"
         onechat_url1 = onechat_uri + '/message/api/v1/push_quickreply'
@@ -16,6 +17,7 @@ class Hooking(Resource):
         data = request.json
         onechat_dev_token = "Bearer Af58c5450f3b45c71a97bc51c05373ecefabc49bd2cd94f3c88d5b844813e69a17e26a828c2b64ef889ef0c10e2aee347"
         qr_code_api = "https://api.qrserver.com/v1/create-qr-code/"
+        headers = {"Authorization": onechat_dev_token}
 
         print(TAG, data)
         if(data['event'] == "message"):
@@ -34,7 +36,6 @@ class Hooking(Resource):
                     ORDER BY bookings.meeting_start
                     LIMIT 1""" %(email)
 
-                    database = Database()
                     res = database.getData(cmd)
 
                     print(TAG, "res=", res)
@@ -65,7 +66,7 @@ class Hooking(Resource):
                         with open(file_dir + file_name, 'wb') as f:
                             f.write(result.content)
                         payload = {"to": user_id, "bot_id": bot_id, "type": "file"}
-                        headers = {"Authorization": onechat_dev_token}
+
                         files = [
                             ('file', (file_name, open(
                                 file_dir + file_name,
@@ -84,6 +85,27 @@ class Hooking(Resource):
                         }
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
                         print(TAG, r.text)
+                elif(data['message']['data'] == "list_all_access"):
+                    print(TAG, "list all access")
+                    cmd = """SELECT bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
+                    FROM bookings 
+                    WHERE bookings.one_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP)""" %(email)
+                    res = database.getData(cmd)
+                    print(TAG, "res=", res)
+                    if (res.status_code == 200):
+                        booking_list = res[0]['result']
+                        for i in range(res[0]['len']):
+                            print(TAG, "booking:", booking_list[i])
+
+                        payload = {
+                            "to": user_id,
+                            "bot_id": bot_id,
+                            "type": "text",
+                            "message": "กำลังพัฒนาระบบ",
+                            "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
+                        }
+                        r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
+
             else:
                 print(TAG, "menu sending")
                 req_body = {
@@ -104,6 +126,12 @@ class Hooking(Resource):
                             "type": "text",
                             "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
                             "payload": "access_req"
+                        },
+                        {
+                            "label": "การจองของคุณ",
+                            "type": "text",
+                            "message": "ต้องการดูการจองของฉัน",
+                            "payload": "list_all_booking"
                         }
                         ]
                 }

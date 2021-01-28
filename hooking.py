@@ -15,20 +15,22 @@ class Hooking(Resource):
             bot_id = data['bot_id']
             user_id = data['source']['user_id']
             req_body = {
-	"to": user_id,
-	"bot_id": bot_id,
-	"message": "Menu",
-	"quick_reply": [ {
-	"label": "Booking system",
-	"type": "webview",
-	"url": web_vue_url1,
-	"size": "tall",
-	"sign": "false",
-	"onechat_token": "true"
-    }]
-}
-        result = requests.post(onechat_url1, data="test", headers = {"Authorization": onechat_dev_token})
-        print(TAG, result.text)
+            "to": user_id,
+            "bot_id": bot_id,
+            "message": "Menu",
+            "quick_reply": [ {
+            "label": "Booking system",
+            "type": "webview",
+            "url": web_vue_url1,
+            "size": "tall",
+            "sign": "false",
+            "onechat_token": "true"
+            }]
+        }
+            result = requests.post(onechat_url1, data=req_body, headers = {"Authorization": onechat_dev_token})
+            print(TAG, result.text)
+        else:
+            print(TAG, "unkown data")
 
         return {
             "type": True,

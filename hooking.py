@@ -78,7 +78,8 @@ class Hooking(Resource):
                             "message": "แสดง QR Code นี้เพื่อเปิดประตูของคุณเมื่อถึงเวลา",
                             "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
                         }
-                        r = requests
+                        r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
+                        print(TAG, r.text)
             else:
                 print(TAG, "menu sending")
                 req_body = {

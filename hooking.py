@@ -127,7 +127,8 @@ class Hooking(Resource):
                     print(TAG, "list all access")
                     cmd = """SELECT bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
                     FROM bookings 
-                    WHERE bookings.one_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP)""" %(email)
+                    WHERE bookings.one_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND eject_at IS NULL
+                    ORDER BY bookings.meeting_start""" %(email)
                     res = database.getData(cmd)
                     print(TAG, "res=", res)
                     if (res[1] == 200):

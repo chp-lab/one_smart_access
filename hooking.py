@@ -32,11 +32,9 @@ class Hooking(Resource):
                     },
                     {
                         "label": "แสดง QR Code",
-                        "type": "webview",
-                        "url": web_vue_url1,
-                        "size": "tall",
-                        "sign": "false",
-                        "onechat_token": "true"
+                        "type": "text",
+                        "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
+                        "payload": "access_req"
                     }
                     ]
             }

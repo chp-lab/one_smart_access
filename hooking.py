@@ -4,10 +4,12 @@ from flask_restful import Resource, reqparse
 from flask import Flask, request, jsonify
 import requests
 from database import Database
+from module import Module
 
 class Hooking(Resource):
     def post(self):
         TAG = "Hooking:"
+        module = Module()
         onechat_uri = "https://chat-api.one.th"
         onechat_url1 = onechat_uri + '/message/api/v1/push_quickreply'
         web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
@@ -47,6 +49,7 @@ class Hooking(Resource):
                         headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", json=payload, headers=headers)
                         print(TAG, r.text)
+                        return module.wrongAPImsg()
 
                     booking_number = res[0]['result'][0]['booking_number']
 

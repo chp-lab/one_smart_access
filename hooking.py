@@ -36,7 +36,7 @@ class Hooking(Resource):
                         with open(file_dir + file_name, 'rb') as f:
                             data = {"to": user_id, "bot_id": bot_id, "type": "file"}
                             header = {"Authorization": onechat_dev_token, "Content-Type": "multipart/form-data"}
-                            r = requests.post(onechat_uri + "/message/api/v1/push_message", files={'file': f}, data=data)
+                            r = requests.post(onechat_uri + "/message/api/v1/push_message", files={'file': f}, data=data, headers=header)
                             print(TAG, r.text)
             else:
                 print(TAG, "menu sending")

@@ -17,9 +17,9 @@ class Hooking(Resource):
             req_body = {
 	"to": user_id,
 	"bot_id": bot_id,
-	"message": "โปรดเลือกบริการ",
+	"message": "Menu",
 	"quick_reply": [ {
-	"label": "ระบบจองห้องประชุม",
+	"label": "Booking system",
 	"type": "webview",
 	"url": web_vue_url1,
 	"size": "tall",
@@ -27,7 +27,7 @@ class Hooking(Resource):
 	"onechat_token": "true"
     }]
 }
-        result = requests.post(onechat_url1, data=req_body, headers = {"Authorization": onechat_dev_token})
+        result = requests.post(onechat_url1, data="test", headers = {"Authorization": onechat_dev_token})
         print(TAG, result.text)
 
         return {

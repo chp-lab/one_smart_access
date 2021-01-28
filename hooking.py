@@ -29,7 +29,7 @@ class Hooking(Resource):
             "onechat_token": "true"
             }]
         }
-            result = requests.post(onechat_url1, data=req_body, headers = {"Authorization": onechat_dev_token})
+            result = requests.post(onechat_url1, data=req_body, auth=(onechat_dev_token))
             print(TAG, result.text)
         else:
             print(TAG, "unkown data")

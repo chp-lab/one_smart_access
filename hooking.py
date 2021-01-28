@@ -106,10 +106,11 @@ class Hooking(Resource):
                             "to": user_id,
                             "bot_id": bot_id,
                             "type": "text",
-                            "message": booking_list,
+                            "message": reply_msg,
                             "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
                         }
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
+                        print(TAG, r.text)
                 else:
                     print(TAG, "Unknow service")
             else:

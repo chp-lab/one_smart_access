@@ -6,26 +6,27 @@ import requests
 class Hooking(Resource):
     def post(self):
         TAG = "Hooking:"
-        url = 'https://chat-api.one.th/message/api/v1/push_quickreply'
+        onechat_url1 = 'https://chat-api.one.th/message/api/v1/push_quickreply'
+        web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
         data = request.json
         print(TAG, data)
         if(data['event'] == "message"):
             bot_id = data['bot_id']
             user_id = data['source']['user_id']
             req_body = {
-	"to": "U18a33b1dcddf59da8000068357b3c745",
-	"bot_id": "B75900943c6205ce084d1c5e8850d40f9",
+	"to": user_id,
+	"bot_id": bot_id,
 	"message": "โปรดเลือกบริการ",
 	"quick_reply": [ {
 	"label": "ระบบจองห้องประชุม",
 	"type": "webview",
-	"url": "https://web-meeting-room.herokuapp.com/",
+	"url": web_vue_url1,
 	"size": "tall",
 	"sign": "false",
 	"onechat_token": "true"
     }]
 }
-        result = requests.post(url, data=req_body)
+        result = requests.post(onechat_url1, data=req_body)
         print(TAG, result.text)
 
         return {

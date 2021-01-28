@@ -28,9 +28,9 @@ class Hooking(Resource):
                     print(TAG, "access req recv")
 
                     cmd = """SELECT booking.booking_number FROM booking 
-                    WHERE (booking.meeting_end > (CURRENT_TIMESTAMP)) AND (booking.one_id = "chatpeth.ke@one.th") 
-                    ORDER BY booking.meeting_start 
-                    LIMIT 1"""
+                    WHERE (booking.meeting_end > (CURRENT_TIMESTAMP)) AND (booking.one_id = "%s") 
+                    ORDER BY booking.meeting_start
+                    LIMIT 1""" %(email)
 
                     res = database.getData(cmd)
 

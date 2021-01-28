@@ -73,7 +73,7 @@ class Hooking(Resource):
                         ]
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", files=files, data=payload, headers=headers)
                         print(TAG, r.text)
-                        tmo_msg = """ห้องประชุม '%s'
+                        reply_msg = """ห้องประชุม '%s'
                         เหตุผล '%s'
                         เวลาเริ่มการประชุม '%s'
                         เวลาสิ้นสุดการประชุม '%s'
@@ -83,7 +83,7 @@ class Hooking(Resource):
                             "to": user_id,
                             "bot_id": bot_id,
                             "type": "text",
-                            "message": "แสดง QR Code นี้เพื่อเปิดประตูของคุณเมื่อถึงเวลา",
+                            "message": reply_msg,
                             "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
                         }
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)

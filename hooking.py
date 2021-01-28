@@ -85,7 +85,7 @@ class Hooking(Resource):
                         }
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
                         print(TAG, r.text)
-                elif(data['message']['data'] == "list_all_access"):
+                elif(data['message']['data'] == "list_all_booking"):
                     print(TAG, "list all access")
                     cmd = """SELECT bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
                     FROM bookings 

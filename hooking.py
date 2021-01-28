@@ -14,6 +14,8 @@ class Hooking(Resource):
         if(data['event'] == "message"):
             bot_id = data['bot_id']
             user_id = data['source']['user_id']
+            print(TAG, "bot_id=", bot_id)
+            print(TAG, "user_id=", user_id)
             req_body = {
             "to": user_id,
             "bot_id": bot_id,

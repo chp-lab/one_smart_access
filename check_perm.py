@@ -29,7 +29,7 @@ class Check_perm(Resource):
 
         # check with database
 
-        query_cmd = """ SELECT IF((CURRENT_TIMESTAMP>booking.meeting_start) AND (CURRENT_TIMESTAMP<booking.meeting_end), true, false) as time_to_meet FROM booking WHERE booking_number=%s AND one_id='%s' AND room_num='%s' """ \
+        query_cmd = """ SELECT IF((CURRENT_TIMESTAMP>bookings.meeting_start) AND (CURRENT_TIMESTAMP<bookings.meeting_end), true, false) as time_to_meet FROM bookings WHERE booking_number=%s AND one_id='%s' AND room_num='%s' """ \
                     % (booking_number, one_id, room_num)
         print(TAG, "query_cmd=", query_cmd)
         response = database.getData(query_cmd)

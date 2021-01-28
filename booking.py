@@ -8,7 +8,7 @@ class Booking(Resource):
         start_time = time.time()
         database = Database()
 
-        cmd = """SELECT * FROM booking WHERE booking_number=%s""" %(booking_number)
+        cmd = """SELECT * FROM bookings WHERE booking_number=%s""" %(booking_number)
         res = database.getData(cmd)
 
         elapsed_time = (time.time() - start_time) * 1000

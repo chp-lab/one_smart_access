@@ -28,9 +28,9 @@ class Hooking(Resource):
                 if(data['message']['data'] == "access_req"):
                     print(TAG, "access req recv")
 
-                    cmd = """SELECT booking.booking_number FROM booking 
-                    WHERE (booking.meeting_end > (CURRENT_TIMESTAMP)) AND (booking.one_email = "%s") 
-                    ORDER BY booking.meeting_start
+                    cmd = """SELECT bookings.booking_number FROM bookings 
+                    WHERE (bookings.meeting_end > (CURRENT_TIMESTAMP)) AND (bookings.one_email = "%s") 
+                    ORDER BY bookings.meeting_start
                     LIMIT 1""" %(email)
 
                     database = Database()

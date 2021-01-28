@@ -28,7 +28,8 @@ class Hooking(Resource):
                 if(data['message']['data'] == "access_req"):
                     print(TAG, "access req recv")
 
-                    cmd = """SELECT bookings.booking_number FROM bookings 
+                    cmd = """SELECT bookings.booking_number, bookings.room_num, bookings.agenda,
+                    bookings.meeting_start, bookings.meeting_end FROM bookings 
                     WHERE (bookings.meeting_end > (CURRENT_TIMESTAMP)) AND (bookings.one_email = "%s") 
                     ORDER BY bookings.meeting_start
                     LIMIT 1""" %(email)
@@ -52,6 +53,7 @@ class Hooking(Resource):
                         return module.wrongAPImsg()
 
                     booking_number = res[0]['result'][0]['booking_number']
+                    booking_data = res[0]['result'][0]
 
                     qr_code_api = qr_code_api + """?data={"booking_number":%s,"one_id":"%s"}""" %(booking_number, email)
                     print(TAG, "qr code generating...")
@@ -71,6 +73,12 @@ class Hooking(Resource):
                         ]
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", files=files, data=payload, headers=headers)
                         print(TAG, r.text)
+                        tmo_msg = """ห้องประชุม '%s'
+                        เหตุผล '%s'
+                        เวลาเริ่มการประชุม '%s'
+                        เวลาสิ้นสุดการประชุม '%s'
+                        แสกน QR Code หน้าห้องประชุมเมื่อถึงเวลา
+                        """ %(booking_data['room_num'], booking_data['agenda'], booking_data['meeting_start'], booking_data['meeting_end'])
                         payload = {
                             "to": user_id,
                             "bot_id": bot_id,

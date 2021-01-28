@@ -19,7 +19,6 @@ class Hooking(Resource):
         if(data['event'] == "message"):
             bot_id = data['bot_id']
             user_id = data['source']['user_id']
-            booking_number = 1
             email = data['source']['email']
             print(TAG, "bot_id=", bot_id)
             print(TAG, "user_id=", user_id)
@@ -36,6 +35,20 @@ class Hooking(Resource):
                     res = database.getData(cmd)
 
                     print(TAG, "res=", res)
+
+                    if(res[0][len] == 0):
+                        payload = {
+                            "to": user_id,
+                            "bot_id": bot_id,
+                            "type": "text",
+                            "message": "ไม่พบข้อมูลการจองของคุณ",
+                            "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
+                        }
+                        headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
+                        r = requests.post(onechat_uri + "/message/api/v1/push_message", json=payload, headers=headers)
+                        print(TAG, r.text)
+
+                    booking_number = res[0]['result'][0]['booking_number']
 
                     qr_code_api = qr_code_api + """?data={"booking_number":%s,"one_id":"%s"}""" %(booking_number, email)
                     print(TAG, "qr code generating...")

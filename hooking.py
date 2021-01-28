@@ -33,11 +33,15 @@ class Hooking(Resource):
                         print(TAG, "complete")
                         with open(file_dir + file_name, 'wb') as f:
                             f.write(result.content)
-                        with open(file_dir + file_name, 'rb') as f:
-                            data = {"to": user_id, "bot_id": bot_id, "type": "file"}
-                            header = {"Authorization": onechat_dev_token, "Content-Type": "multipart/form-data"}
-                            r = requests.post(onechat_uri + "/message/api/v1/push_message", files={'file': f}, data=data, headers=header)
-                            print(TAG, r.text)
+                        payload = {"to": user_id, "bot_id": bot_id, "type": "file"}
+                        headers = {"Authorization": onechat_dev_token}
+                        files = [
+                            ('file', (file_name, open(
+                                file_dir + file_name,
+                                'rb'), 'image/png'))
+                        ]
+                        r = requests.post(onechat_uri + "/message/api/v1/push_message", files=files, data=payload, headers=headers)
+                        print(TAG, r.text)
             else:
                 print(TAG, "menu sending")
                 req_body = {
@@ -62,8 +66,8 @@ class Hooking(Resource):
                         ]
                 }
 
-                header = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
-                result = requests.post(onechat_url1, json=req_body, headers=header)
+                headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
+                result = requests.post(onechat_url1, json=req_body, headers=headers)
                 print(TAG, result.text)
         else:
             print(TAG, "unkown data")

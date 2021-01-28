@@ -9,6 +9,7 @@ class Hooking(Resource):
         onechat_url1 = 'https://chat-api.one.th/message/api/v1/push_quickreply'
         web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
         data = request.json
+        onechat_dev_token = "Bearer Af58c5450f3b45c71a97bc51c05373ecefabc49bd2cd94f3c88d5b844813e69a17e26a828c2b64ef889ef0c10e2aee347"
         print(TAG, data)
         if(data['event'] == "message"):
             bot_id = data['bot_id']
@@ -26,7 +27,7 @@ class Hooking(Resource):
 	"onechat_token": "true"
     }]
 }
-        result = requests.post(onechat_url1, data=req_body)
+        result = requests.post(onechat_url1, data=req_body, headers = {"Authorization": onechat_dev_token})
         print(TAG, result.text)
 
         return {

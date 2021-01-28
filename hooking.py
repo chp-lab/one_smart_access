@@ -19,25 +19,25 @@ class Hooking(Resource):
             "message": "ท่านต้องการบริการอะไรหรือไม่",
             "quick_reply":
                 [{
-                    "label": "ระบบจัดการห้องประชุม",
+                    "label": "จัดการห้อง",
                     "type": "webview",
                     "url": web_vue_url1,
                     "size": "tall",
                     "sign": "false",
                     "onechat_token": "true"
                 },
-                    {
-                        "label": "แสดง QR Code",
-                        "type": "text",
-                        "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
-                        "payload": "access_req"
-                    },
-                    {
-                        "label": "การจองของคุณ",
-                        "type": "text",
-                        "message": "ต้องการดูการจองของฉัน",
-                        "payload": "list_all_booking"
-                    }
+                {
+                    "label": "แสดง QR Code",
+                    "type": "text",
+                    "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
+                    "payload": "access_req"
+                },
+                {
+                    "label": "การจองของคุณ",
+                    "type": "text",
+                    "message": "ต้องการดูการจองของฉัน",
+                    "payload": "list_all_booking"
+                }
                 ]
         }
 

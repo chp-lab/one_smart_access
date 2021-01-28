@@ -16,7 +16,7 @@ class Hooking(Resource):
         req_body = {
             "to": user_id,
             "bot_id": bot_id,
-            "message": "โปรเลือกบริการ",
+            "message": "ท่านต้องการบริการอะไรหรือไม่",
             "quick_reply":
                 [{
                     "label": "ระบบจัดการห้องประชุม",

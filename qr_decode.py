@@ -5,4 +5,4 @@ import requests
 class Qr_decode(Resource):
     def get(self):
         TAG = "qr_decode:"
-        return send_from_directory("./public", "hello.txt")
+        return send_from_directory("./public", "tmpqrcode.jpg")

@@ -197,7 +197,7 @@ class Hooking(Resource):
                     cmd = """SELECT bookings.booking_number, bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
                     FROM `bookings` 
                     LEFT JOIN guests ON bookings.booking_number=guests.booking_number
-                    WHERE (bookings.meeting_end > (CURRENT_TIMESTAMP)) AND (guests.guest_email = "chatpeth.ke@one.th")
+                    WHERE (bookings.meeting_end > (CURRENT_TIMESTAMP)) AND (guests.guest_email = "%s")
                     ORDER BY bookings.meeting_start LIMIT 1""" % (email)
 
                     res = database.getData(cmd)

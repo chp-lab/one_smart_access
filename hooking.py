@@ -209,7 +209,7 @@ class Hooking(Resource):
                             "to": user_id,
                             "bot_id": bot_id,
                             "type": "text",
-                            "message": "ไม่พบข้อมูลการจองของคุณ",
+                            "message": "ไม่พบข้อมูลคำเชิญที่คุณได้รับ",
                             "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
                         }
                         headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
@@ -221,8 +221,8 @@ class Hooking(Resource):
                     booking_number = res[0]['result'][0]['booking_number']
                     booking_data = res[0]['result'][0]
 
-                    qr_code_api = qr_code_api + """?data={"booking_number":%s,"one_id":"%s"}""" % (
-                    booking_number, email)
+                    qr_code_api = qr_code_api + """?data={"booking_number":%s,"one_id":"%s","guest_req":%s}""" % (
+                    booking_number, email, 1)
                     print(TAG, "qr code generating...")
                     result = requests.get(qr_code_api)
                     if (result.status_code == 200):

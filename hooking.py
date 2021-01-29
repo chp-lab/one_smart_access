@@ -49,6 +49,12 @@ class Hooking(Resource):
                     "type": "text",
                     "message": "ขอ QR Code ที่ถูกเชิญ",
                     "payload": "guest_req"
+                },
+                {
+                    "label": "จองห้อง",
+                    "type": "text",
+                    "message": "ต้องการจองห้อง",
+                    "payload": "booking_req"
                 }
                 ]
         }
@@ -254,6 +260,19 @@ class Hooking(Resource):
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
                         self.menu_send(user_id, bot_id)
                         print(TAG, r.text)
+                elif(data['message']['data'] == "booking_req"):
+                    print(TAG, "booking req recv")
+                    headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
+                    reply_msg = "เลือกห้องที่ต้องการจอง"
+                    payload = {
+                        "to": user_id,
+                        "bot_id": bot_id,
+                        "type": "text",
+                        "message": reply_msg,
+                        "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
+                    }
+                    r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
+                    print(r.text)
                 else:
                     print(TAG, "Unknow service")
             else:

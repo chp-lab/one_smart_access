@@ -49,13 +49,13 @@ class Hooking(Resource):
                     "type": "text",
                     "message": "ขอ QR Code ที่ถูกเชิญ",
                     "payload": "guest_req"
-                },
-                {
-                    "label": "จองห้อง",
-                    "type": "text",
-                    "message": "ต้องการจองห้อง",
-                    "payload": {"booking_req":True}
                 }
+                # {
+                #     "label": "จองห้อง",
+                #     "type": "text",
+                #     "message": "ต้องการจองห้อง",
+                #     "payload": {"booking_req":True,"booking_state":"start"}
+                # }
                 ]
         }
 
@@ -260,19 +260,29 @@ class Hooking(Resource):
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
                         self.menu_send(user_id, bot_id)
                         print(TAG, r.text)
-                elif("booking_req" in data['message']['data']):
-                    print(TAG, "booking req recv")
-                    headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
-                    reply_msg = "กรุณาระบุเวลาเริ่มต้น (ตัวอย่าง 14:15 หรือ 8:30)"
-                    payload = {
-                        "to": user_id,
-                        "bot_id": bot_id,
-                        "type": "text",
-                        "message": reply_msg,
-                        "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
-                    }
-                    r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
-                    print(r.text)
+                # elif("booking_req" in data['message']['data']):
+                #     print(TAG, "booking req recv")
+                #     headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
+                #     booking_sate = data["message"]["data"]["booking_state"]
+                #     reply_msg = "เริ่มต้นการจอง"
+                #
+                #     meeting_start = None
+                #     meeting_end = None
+                #     room_num = None
+                #     agenda = None
+                #
+                #     if(booking_sate == "start"):
+                #         print(TAG, "เริ่มต้นการจอง")
+                #         reply_msg = "กรุณาระบุเวลาเริ่มต้น (ตัวอย่าง 14:15 หรือ 8:30)"
+                #     payload = {
+                #         "to": user_id,
+                #         "bot_id": bot_id,
+                #         "type": "text",
+                #         "message": reply_msg,
+                #         "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
+                #     }
+                #     r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
+                #     print(r.text)
                 else:
                     print(TAG, "Unknow service")
             else:

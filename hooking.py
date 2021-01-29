@@ -27,16 +27,16 @@ class Hooking(Resource):
                     "onechat_token": "true"
                 },
                 {
-                    "label": "แสดง QR Code",
-                    "type": "text",
-                    "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
-                    "payload": "access_req"
-                },
-                {
                     "label": "การจองของคุณ",
                     "type": "text",
                     "message": "ต้องการดูการจองของฉัน",
                     "payload": "list_all_booking"
+                },
+                {
+                    "label": ".แสดงกุญแจของคุณ",
+                    "type": "text",
+                    "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
+                    "payload": "access_req"
                 },
                 {
                     "label": "คำเชิญ",
@@ -45,7 +45,7 @@ class Hooking(Resource):
                     "payload": "invite"
                 },
                 {
-                    "label": "ขอ QR code ที่ถูกเชิญ",
+                    "label": "ขอกุญแจที่ถูกเชิญ",
                     "type": "text",
                     "message": "ขอ QR Code ที่ถูกเชิญ",
                     "payload": "guest_req"

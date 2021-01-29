@@ -43,6 +43,12 @@ class Hooking(Resource):
                     "type": "text",
                     "message": "ขอดูคำเชิญ",
                     "payload": "invite"
+                },
+                {
+                    "label": "ขอ QR code ที่ถูกเชิญ",
+                    "type": "text",
+                    "message": "ขอ QR Code ที่ถูกเชิญ",
+                    "payload": "guest_req"
                 }
                 ]
         }
@@ -185,6 +191,69 @@ class Hooking(Resource):
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
                         print(TAG, r.text)
                         self.menu_send(user_id, bot_id)
+                elif (data['message']['data'] == "guest_req"):
+                    print(TAG, "guest req recv")
+
+                    cmd = """SELECT bookings.booking_number, bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
+                    FROM `bookings` 
+                    LEFT JOIN guests ON bookings.booking_number=guests.booking_number
+                    WHERE (bookings.meeting_end > (CURRENT_TIMESTAMP)) AND (guests.guest_email = "chatpeth.ke@one.th")
+                    ORDER BY bookings.meeting_start LIMIT 1""" % (email)
+
+                    res = database.getData(cmd)
+
+                    print(TAG, "res=", res)
+
+                    if (res[0]['len'] == 0):
+                        payload = {
+                            "to": user_id,
+                            "bot_id": bot_id,
+                            "type": "text",
+                            "message": "ไม่พบข้อมูลการจองของคุณ",
+                            "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
+                        }
+                        headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
+                        r = requests.post(onechat_uri + "/message/api/v1/push_message", json=payload, headers=headers)
+                        print(TAG, r.text)
+                        self.menu_send(user_id, bot_id)
+                        return module.wrongAPImsg()
+
+                    booking_number = res[0]['result'][0]['booking_number']
+                    booking_data = res[0]['result'][0]
+
+                    qr_code_api = qr_code_api + """?data={"booking_number":%s,"one_id":"%s"}""" % (
+                    booking_number, email)
+                    print(TAG, "qr code generating...")
+                    result = requests.get(qr_code_api)
+                    if (result.status_code == 200):
+                        file_dir = "./"
+                        file_name = "tmp_qr.png"
+                        print(TAG, "complete")
+                        with open(file_dir + file_name, 'wb') as f:
+                            f.write(result.content)
+                        payload = {"to": user_id, "bot_id": bot_id, "type": "file"}
+
+                        files = [
+                            ('file', (file_name, open(
+                                file_dir + file_name,
+                                'rb'), 'image/png'))
+                        ]
+                        r = requests.post(onechat_uri + "/message/api/v1/push_message", files=files, data=payload,
+                                          headers=headers)
+                        print(TAG, r.text)
+                        reply_msg = """ห้อง %s เหตุผล %s เวลาเริ่ม %s เวลาสิ้นสุด %s แสกน QR Code หน้าห้องเมื่อถึงเวลา""" \
+                                    % (booking_data['room_num'], booking_data['agenda'], booking_data['meeting_start'],
+                                       booking_data['meeting_end'])
+                        payload = {
+                            "to": user_id,
+                            "bot_id": bot_id,
+                            "type": "text",
+                            "message": reply_msg,
+                            "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
+                        }
+                        r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
+                        self.menu_send(user_id, bot_id)
+                        print(TAG, r.text)
                 else:
                     print(TAG, "Unknow service")
             else:

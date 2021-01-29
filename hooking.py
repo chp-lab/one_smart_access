@@ -22,7 +22,7 @@ class Hooking(Resource):
                     "label": "จัดการห้อง",
                     "type": "webview",
                     "url": web_vue_url1,
-                    "size": "tall",
+                    "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
                 },
@@ -74,6 +74,7 @@ class Hooking(Resource):
         headers = {"Authorization": onechat_dev_token}
 
         print(TAG, data)
+        print(TAG, request.headers)
         if(data['event'] == "message"):
             bot_id = data['bot_id']
             user_id = data['source']['user_id']

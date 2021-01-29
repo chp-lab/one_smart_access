@@ -9,9 +9,9 @@ from module import Module
 class Hooking(Resource):
     onechat_uri = "https://chat-api.one.th"
     onechat_dev_token = "Bearer Af58c5450f3b45c71a97bc51c05373ecefabc49bd2cd94f3c88d5b844813e69a17e26a828c2b64ef889ef0c10e2aee347"
+    onechat_url1 = onechat_uri + '/message/api/v1/push_quickreply'
     def menu_send(self, user_id, bot_id):
         TAG = "menu_send:"
-        onechat_url1 = self.onechat_uri + '/message/api/v1/push_quickreply'
         web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
         req_body = {
             "to": user_id,
@@ -54,13 +54,13 @@ class Hooking(Resource):
                     "label": "จองห้อง",
                     "type": "text",
                     "message": "ต้องการจองห้อง",
-                    "payload": "booking_req"
+                    "payload": {"booking_req":True}
                 }
                 ]
         }
 
         headers = {"Authorization": self.onechat_dev_token, "Content-Type": "application/json"}
-        result = requests.post(onechat_url1, json=req_body, headers=headers)
+        result = requests.post(self.onechat_url1, json=req_body, headers=headers)
         print(TAG, result.text)
 
     def post(self):
@@ -260,10 +260,10 @@ class Hooking(Resource):
                         r = requests.post(onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
                         self.menu_send(user_id, bot_id)
                         print(TAG, r.text)
-                elif(data['message']['data'] == "booking_req"):
+                elif("booking_req" in data['message']['data']):
                     print(TAG, "booking req recv")
                     headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
-                    reply_msg = "เลือกห้องที่ต้องการจอง"
+                    reply_msg = "กรุณาระบุเวลาเริ่มต้น (ตัวอย่าง 14:15 หรือ 8:30)"
                     payload = {
                         "to": user_id,
                         "bot_id": bot_id,

@@ -33,7 +33,7 @@ class Hooking(Resource):
                     "payload": "list_all_booking"
                 },
                 {
-                    "label": ".แสดงกุญแจของคุณ",
+                    "label": "แสดงกุญแจของคุณ",
                     "type": "text",
                     "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
                     "payload": "access_req"

@@ -3,44 +3,47 @@ from flask_restful import Resource, reqparse
 from database import Database
 from module import Module
 
-TAG = "my_mqtt:"
-topic = "@msg/set/status"
-# The callback for when the client receives a CONNACK response from the server.
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
-
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
-    client.subscribe(topic)
-
-# The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
-
-
-client_id = "12d62545-176c-4511-b3dc-61148c8e2a44"
-token = "XxABgB71B2zssFGRcz3BrMZdJsb5G5TQ"
-secret = "~#J0UDsDVyfkBBe$taZVetc3q-i_PL8_"
-broker = "mqtt.netpie.io"
-port = 1883
-keep_alive = 60
-
-client = mqtt.Client(client_id=client_id)
-client.on_connect = on_connect
-client.on_message = on_message
-client.username_pw_set(token, secret)
-
-client.connect(broker, port, keep_alive)
-
-# Blocking call that processes network traffic, dispatches callbacks and
-# handles reconnecting.
-# Other loop*() functions are available that give a threaded interface and a
-# manual interface.
-print(TAG, "mqtt start")
-client.publish(topic, "1")
-client.loop_start()
-
 class My_mqtt(Resource):
+    topic = "@msg/set/status/5-0_OAI"
+
+    # The callback for when the client receives a CONNACK response from the server.
+    def on_connect(self, client, userdata, flags, rc):
+        print("Connected with result code " + str(rc))
+
+        # Subscribing in on_connect() means that if we lose the connection and
+        # reconnect then subscriptions will be renewed.
+        # client.subscribe(self.topic)
+
+    # The callback for when a PUBLISH message is received from the server.
+    def on_message(self, client, userdata, msg):
+        print(msg.topic + " " + str(msg.payload))
+
+    def __init__(self):
+        TAG = "my_mqttinit:"
+        client_id = "12d62545-176c-4511-b3dc-61148c8e2a44"
+        token = "XxABgB71B2zssFGRcz3BrMZdJsb5G5TQ"
+        secret = "~#J0UDsDVyfkBBe$taZVetc3q-i_PL8_"
+        broker = "mqtt.netpie.io"
+        port = 1883
+        keep_alive = 60
+
+        client = mqtt.Client(client_id=client_id)
+        client.on_connect = self.on_connect
+        client.on_message = self.on_message
+        client.username_pw_set(token, secret)
+
+        client.connect(broker, port, keep_alive)
+
+        # Blocking call that processes network traffic, dispatches callbacks and
+        # handles reconnecting.
+        # Other loop*() functions are available that give a threaded interface and a
+        # manual interface.
+        print(TAG, "mqtt start")
+        client.publish(self.topic, "1")
+        client.loop_start()
+        # while True:
+        #     TAG  = "test"
+
     def post(self, room_num):
         TAG= "my_mqtt:"
 
@@ -73,3 +76,5 @@ class My_mqtt(Resource):
         else:
             return "developing"
 
+if (__name__ == "__main__"):
+    my_mqtt = My_mqtt()

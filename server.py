@@ -5,6 +5,7 @@ from booking import Booking
 from check_perm import Check_perm
 from hooking import Hooking
 from qr_decode import Qr_decode
+from my_mqtt import My_mqtt
 
 class Server:
     app = None
@@ -26,5 +27,6 @@ if (__name__ == "__main__"):
     server.api.add_resource(Booking, API_VERSION + "/booking/<booking_number>")
     server.api.add_resource(Hooking, API_VERSION + "/hooking")
     server.api.add_resource(Qr_decode, API_VERSION + "/myqr")
+    server.api.add_resource(My_mqtt, API_VERSION + "/unlock/<room_num>")
 
     server.app.run(host="0.0.0.0", debug=True, port=5003)

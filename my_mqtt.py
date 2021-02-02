@@ -40,7 +40,7 @@ print(TAG, "mqtt start")
 client.publish(topic, "1")
 client.loop_start()
 
-class my_mqtt(Resource):
+class My_mqtt(Resource):
     def post(self, room_num):
         TAG= "my_mqtt:"
 

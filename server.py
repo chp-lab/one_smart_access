@@ -5,7 +5,7 @@ from booking import Booking
 from check_perm import Check_perm
 from hooking import Hooking
 from qr_decode import Qr_decode
-from my_mqtt import My_mqtt
+from my_mqtt import My_mqtt()
 
 class Server:
     app = None
@@ -23,7 +23,7 @@ if (__name__ == "__main__"):
     TAG = "main:"
     API_VERSION = "/api/v1"
     server = Server()
-    my_mqtt = My_mqtt()
+
     server.api.add_resource(Check_perm, API_VERSION + "/check_perm/<room_num>")
     server.api.add_resource(Booking, API_VERSION + "/booking/<booking_number>")
     server.api.add_resource(Hooking, API_VERSION + "/hooking")

@@ -41,8 +41,8 @@ class My_mqtt(Resource):
         print(TAG, "mqtt start")
         client.publish(self.topic, "1")
         client.loop_start()
-        # while True:
-        #     TAG  = "test"
+        while True:
+            TAG  = "test"
 
     def post(self, room_num):
         TAG= "my_mqtt:"

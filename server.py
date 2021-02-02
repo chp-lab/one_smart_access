@@ -5,7 +5,7 @@ from booking import Booking
 from check_perm import Check_perm
 from hooking import Hooking
 from qr_decode import Qr_decode
-from my_mqtt import My_mqtt()
+from my_mqtt import My_mqtt
 
 class Server:
     app = None

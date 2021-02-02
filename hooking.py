@@ -20,9 +20,8 @@ class Hooking(Resource):
             "quick_reply":
                 [{
                     "label": "จัดการห้อง",
-                    "type": "webview",
+                    "type": "link",
                     "url": web_vue_url1,
-                    "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
                 },

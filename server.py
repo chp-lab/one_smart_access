@@ -23,7 +23,7 @@ if (__name__ == "__main__"):
     TAG = "main:"
     API_VERSION = "/api/v1"
     server = Server()
-    my_mqtt = My_mqtt()
+    # my_mqtt = My_mqtt()
 
     server.api.add_resource(Check_perm, API_VERSION + "/check_perm/<room_num>")
     server.api.add_resource(Booking, API_VERSION + "/booking/<booking_number>")

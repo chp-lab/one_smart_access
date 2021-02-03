@@ -50,9 +50,10 @@ class Hooking(Resource):
                     "payload": "guest_req"
                 },
                 {
-                    "label": "จัดการห้อง",
-                    "type": "webvue",
+                    "label": "เปิดกล่อง",
+                    "type": "webview",
                     "url": "http://18.140.173.239:5004/",
+                    "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
                 }

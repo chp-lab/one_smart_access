@@ -83,14 +83,13 @@ class My_mqtt(Resource):
         args = parser.parse_args()
 
         if (not module.isQueryStr(args, guest_req_key)):
-            print(TAG, "bad req")
+            print(TAG, "bad api calling")
             return module.wrongAPImsg()
 
         guest_req = args.get(guest_req_key)
-
         print(TAG, "guest_req=", guest_req)
 
-        if(guest_req == "False"):
+        if(guest_req == "no"):
             print(TAG, "owner req recv")
             # check are there any booking
             cmd = """SELECT bookings.booking_number, bookings.meeting_start, bookings.meeting_end, bookings.room_num, bookings.agenda
@@ -111,7 +110,76 @@ class My_mqtt(Resource):
             res[0]["help"] = "unlock success"
             print(TAG, res)
             return res
-        else:
+        elif(guest_req == "none"):
+            print(TAG, "main door req recv")
+            cmd = """SELECT rooms.building FROM rooms WHERE rooms.room_num='%s' AND rooms.main_door=1""" % (room_num)
+            res = database.getData(cmd)
+            print(TAG, "res=", res)
+            if (res[0]['len'] == 0):
+                print(TAG, "bad req")
+                return module.wrongAPImsg()
+            one_id = json_res["data"]["one_id"]
+            # call covid tracking api
+            covid_tk_uri = "https://api.covid19.inet.co.th/api/v1/health/"
+            cv_token = "Bearer Q27ldU/si5gO/h5+OtbwlN5Ti8bDUdjHeapuXGJFoUP+mA0/VJ9z83cF8O+MKNcBS3wp/pNxUWUf5GrBQpjTGq/aWVugF0Yr/72fwPSTALCVfuRDir90sVl2bNx/ZUuAfA=="
+            cv = requests.get(covid_tk_uri + one_id, headers={"Authorization": cv_token})
+            print(TAG, "cv=", cv.json())
+            cv_json = cv.json()
+            if (cv_json["msg"] != "success"):
+                return {
+                    "type": False,
+                    "message": "fail",
+                    "error_message": "Unauthorized",
+                    "result": None,
+                    "help": "Main door.User may not found in covid tracking, please add covid tracking bot as new friend and give access permission"
+                }
+            # check access permission from covid lv.
+            # then reture result to client
+            door_action = "open"
+            msg = ""
+            help = "หมั่นล้างมือ ใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
+            covid_lv = cv_json["data"]
+
+            if (covid_lv == ""):
+                door_action = "not_open"
+                msg = "data_not_found"
+                help = "กรุณาประเมิณความเสี่ยง Covid-19 กับบอท Covid tracking ก่อน"
+            elif (covid_lv == "green"):
+                msg = "normal"
+            elif (covid_lv == "yellow"):
+                msg = "ok"
+                help = "กรุณาใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
+            elif (covid_lv == "orange"):
+                door_action = "not_open"
+                msg = "warning"
+                help = "กรุณาติดต่อเจ้าหน้าที่เพื่อขอเข้าพื้นที่"
+            elif (covid_lv == "red"):
+                door_action = "not_open"
+                msg = "danger"
+                help = "กรุณาติดต่อเจ้าหน้าที่เพื่อกักตัว"
+            else:
+                door_action = "not_open"
+                msg = "unkonw"
+                help = "ไม่ทราบสถานะ กรุณาติดต่อเจ้าหน้าที่เพื่อขอเข้าพื้นที่"
+
+            if (door_action == "open"):
+                self.unlock(room_num)
+
+            result = {
+                "type": True,
+                "message": "success",
+                "error_message": None,
+                "result": [
+                    {
+                        "covid_level": covid_lv,
+                        "door_action": door_action,
+                        "msg": msg
+                    }
+                ],
+                "help": help
+            }
+            return result
+        elif(guest_req == "yes"):
             print(TAG, "guest_req recv")
             cmd = """SELECT bookings.booking_number, bookings.meeting_start, bookings.meeting_end, bookings.room_num, bookings.agenda
             FROM bookings
@@ -131,6 +199,8 @@ class My_mqtt(Resource):
             res[0]["help"] = "unlock success"
             print(TAG, res)
             return res
+        else:
+            return module.wrongAPImsg()
 
 if (__name__ == "__main__"):
     my_mqtt = My_mqtt()

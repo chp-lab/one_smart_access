@@ -48,6 +48,13 @@ class Hooking(Resource):
                     "type": "text",
                     "message": "ขอ QR Code ที่ถูกเชิญ",
                     "payload": "guest_req"
+                },
+                {
+                    "label": "จัดการห้อง",
+                    "type": "webvue",
+                    "url": "http://18.140.173.239:5004/",
+                    "sign": "false",
+                    "onechat_token": "true"
                 }
                 # {
                 #     "label": "จองห้อง",

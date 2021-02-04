@@ -56,6 +56,14 @@ class Hooking(Resource):
                     "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
+                },
+                {
+                    "label": "unit test",
+                    "type": "webview",
+                    "url": "https://salty-plateau-47312.herokuapp.com/#/",
+                    "size": "full",
+                    "sign": "false",
+                    "onechat_token": "true"
                 }
                 # {
                 #     "label": "จองห้อง",

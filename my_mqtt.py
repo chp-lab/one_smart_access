@@ -103,13 +103,14 @@ class My_mqtt(Resource):
             LIMIT 1""" %(room_num, one_email)
 
             res = database.getData(cmd)
+            # print(TAG, "res=", res)
             if(res[1] != 200):
                 print(TAG, "server error")
                 return module.serveErrMsg()
             if(res[0]["len"] == 0):
                 return module.measurementNotFound()
 
-            booking_number = res[0]['result'] ['booking_number']
+            booking_number = res[0]['result'][0]['booking_number']
 
             self.unlock(room_num)
             res[0]["help"] = "unlock success"

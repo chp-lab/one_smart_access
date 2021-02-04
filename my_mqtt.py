@@ -205,12 +205,14 @@ class My_mqtt(Resource):
             return result
         elif(guest_req == "yes"):
             print(TAG, "guest_req recv")
+            one_email = json_res['data']['email']
+
             cmd = """SELECT bookings.booking_number, bookings.meeting_start, bookings.meeting_end, bookings.room_num, bookings.agenda
             FROM bookings
             LEFT JOIN guests ON bookings.booking_number=guests.booking_number
             WHERE bookings.room_num='%s' AND guests.guest_email='%s' AND bookings.meeting_start < (CURRENT_TIMESTAMP) AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND bookings.eject_at IS NULL
             ORDER BY bookings.meeting_start
-            LIMIT 1""" %(room_num, json_res['data']['email'])
+            LIMIT 1""" %(room_num, one_email)
 
             res = database.getData(cmd)
             if(res[1] != 200):
@@ -222,6 +224,15 @@ class My_mqtt(Resource):
             self.unlock(room_num)
             res[0]["help"] = "unlock success"
             print(TAG, res)
+
+            booking_number = res[0]['result'][0]['booking_number']
+
+            sql = """INSERT INTO access_logs (booking_number, one_email) VALUES (%s, '%s')""" % (
+            booking_number, one_email)
+
+            insert = database.insertData(sql)
+            print(TAG, "insert=", insert)
+
             return res
         else:
             return module.wrongAPImsg()

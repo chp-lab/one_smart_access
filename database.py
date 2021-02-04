@@ -74,3 +74,28 @@ class Database(Resource):
                    'result': result,
                    'elapsed_time_ms': elapsed_time
                }, 200
+
+    def insertData(self, cmd):
+        TAG = "InsetToDB:"
+        start_time = time.time()
+        module = Module()
+
+        print(TAG, "cmd=", cmd)
+        print(TAG, "insert data")
+        mydb = mysql.connector.connect(**self.config)
+        mycursor = mydb.cursor()
+        mycursor.reset()
+        mycursor.execute(cmd)
+        mydb.commit()
+        mydb.close()
+        elapsed_time = (time.time() - start_time) * 1000
+        return {
+                   'type': True,
+                   'message': "success",
+                   'error_message': None,
+                   'len': mycursor.rowcount,
+                   'result': [],
+                   'elapsed_time_ms': elapsed_time
+                }, 200
+
+

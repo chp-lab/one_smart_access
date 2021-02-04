@@ -73,8 +73,10 @@ class My_mqtt(Resource):
         json_res = r.json()
 
         if(json_res['status'] == "fail"):
+            print(TAG, "not found in ode platform")
             return module.unauthorized()
 
+        print(TAG, "process the req")
 
         guest_req_key = "guest_req"
         parser = reqparse.RequestParser()
@@ -119,6 +121,10 @@ class My_mqtt(Resource):
                 print(TAG, "bad req")
                 return module.wrongAPImsg()
             one_id = json_res["data"]["one_id"]
+            one_email = json_res["data"]["email"]
+
+            print(TAG, "one_email=", one_email)
+
             # call covid tracking api
             covid_tk_uri = "https://api.covid19.inet.co.th/api/v1/health/"
             cv_token = "Bearer Q27ldU/si5gO/h5+OtbwlN5Ti8bDUdjHeapuXGJFoUP+mA0/VJ9z83cF8O+MKNcBS3wp/pNxUWUf5GrBQpjTGq/aWVugF0Yr/72fwPSTALCVfuRDir90sVl2bNx/ZUuAfA=="
@@ -150,7 +156,7 @@ class My_mqtt(Resource):
                 msg = "ok"
                 help = "กรุณาใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
             elif (covid_lv == "orange"):
-                door_action = "not_open"
+                door_action = "open"
                 msg = "warning"
                 help = "กรุณาติดต่อเจ้าหน้าที่เพื่อขอเข้าพื้นที่"
             elif (covid_lv == "red"):
@@ -164,6 +170,15 @@ class My_mqtt(Resource):
 
             if (door_action == "open"):
                 self.unlock(room_num)
+
+            sql = """INSERT INTO covid_tracking_log (covid_level, door_action, one_email)
+            VALUES ('%s', '%s', '%s')""" %(covid_lv, door_action, one_email)
+
+            # insert data
+            insert = database.insertData(sql)
+
+
+            print(TAG, "insert=", insert)
 
             result = {
                 "type": True,

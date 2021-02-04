@@ -171,8 +171,8 @@ class My_mqtt(Resource):
             if (door_action == "open"):
                 self.unlock(room_num)
 
-            sql = """INSERT INTO covid_tracking_log (covid_level, door_action, one_email)
-            VALUES ('%s', '%s', '%s')""" %(covid_lv, door_action, one_email)
+            sql = """INSERT INTO covid_tracking_log (room_num, covid_level, door_action, one_email)
+            VALUES ('%s', '%s', '%s', '%s')""" %(room_num, covid_lv, door_action, one_email)
 
             # insert data
             insert = database.insertData(sql)

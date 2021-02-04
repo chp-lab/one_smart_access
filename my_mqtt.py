@@ -93,13 +93,14 @@ class My_mqtt(Resource):
 
         if(guest_req == "no"):
             print(TAG, "owner req recv")
+            one_email = json_res['data']['email']
             # check are there any booking
             cmd = """SELECT bookings.booking_number, bookings.meeting_start, bookings.meeting_end, bookings.room_num, bookings.agenda
             FROM bookings 
             WHERE bookings.room_num='%s' AND bookings.one_email='%s' AND bookings.meeting_start < (CURRENT_TIMESTAMP) AND bookings.meeting_end > (CURRENT_TIMESTAMP) 
             AND bookings.eject_at IS NULL
             ORDER BY bookings.meeting_start
-            LIMIT 1""" %(room_num, json_res['data']['email'])
+            LIMIT 1""" %(room_num, one_email)
 
             res = database.getData(cmd)
             if(res[1] != 200):
@@ -108,9 +109,16 @@ class My_mqtt(Resource):
             if(res[0]["len"] == 0):
                 return module.measurementNotFound()
 
+            booking_number = res[0]['result'] ['booking_number']
+
             self.unlock(room_num)
             res[0]["help"] = "unlock success"
             print(TAG, res)
+
+            sql = """INSERT INTO access_logs (booking_number, one_email) VALUES (%s, '%s')""" %(booking_number, one_email)
+            insert = database.insertData(sql)
+            print(TAG, "insert=", insert)
+
             return res
         elif(guest_req == "none"):
             print(TAG, "main door req recv")

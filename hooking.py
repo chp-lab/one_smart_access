@@ -60,7 +60,7 @@ class Hooking(Resource):
                 {
                     "label": "unit test",
                     "type": "webview",
-                    "url": "https://salty-plateau-47312.herokuapp.com/#/",
+                    "url": "https://qrrtester.herokuapp.com/#/",
                     "size": "full",
                     "sign": "false",
                     "onechat_token": "true"

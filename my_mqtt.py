@@ -94,6 +94,7 @@ class My_mqtt(Resource):
         if(guest_req == "no"):
             print(TAG, "owner req recv")
             one_email = json_res['data']['email']
+            one_id = json_res['data']['one_id']
             # check are there any booking
             cmd = """SELECT bookings.booking_number, bookings.meeting_start, bookings.meeting_end, bookings.room_num, bookings.agenda
             FROM bookings 
@@ -116,7 +117,7 @@ class My_mqtt(Resource):
             res[0]["help"] = "unlock success"
             print(TAG, res)
 
-            sql = """INSERT INTO access_logs (booking_number, one_email) VALUES (%s, '%s')""" %(booking_number, one_email)
+            sql = """INSERT INTO access_logs (booking_number, one_email, one_id) VALUES (%s, '%s')""" %(booking_number, one_email, one_id)
             insert = database.insertData(sql)
             print(TAG, "insert=", insert)
 

@@ -94,7 +94,6 @@ class My_mqtt(Resource):
         if(guest_req == "no"):
             print(TAG, "owner req recv")
             one_email = json_res['data']['email']
-            one_id = json_res['data']['one_id']
             # check are there any booking
             cmd = """SELECT bookings.booking_number, bookings.meeting_start, bookings.meeting_end, bookings.room_num, bookings.agenda
             FROM bookings 
@@ -117,7 +116,7 @@ class My_mqtt(Resource):
             res[0]["help"] = "unlock success"
             print(TAG, res)
 
-            sql = """INSERT INTO access_logs (booking_number, one_email, one_id) VALUES (%s, '%s', %s)""" %(booking_number, one_email, one_id)
+            sql = """INSERT INTO access_logs (booking_number, one_email) VALUES (%s, '%s')""" %(booking_number, one_email)
             insert = database.insertData(sql)
             print(TAG, "insert=", insert)
 
@@ -132,6 +131,7 @@ class My_mqtt(Resource):
                 return module.wrongAPImsg()
             one_id = json_res["data"]["one_id"]
             one_email = json_res["data"]["email"]
+            one_id = json_res['data']['one_id']
 
             print(TAG, "one_email=", one_email)
 
@@ -181,8 +181,8 @@ class My_mqtt(Resource):
             if (door_action == "open"):
                 self.unlock(room_num)
 
-            sql = """INSERT INTO covid_tracking_log (room_num, covid_level, door_action, one_email)
-            VALUES ('%s', '%s', '%s', '%s')""" %(room_num, covid_lv, door_action, one_email)
+            sql = """INSERT INTO covid_tracking_log (room_num, covid_level, door_action, one_email, one_id)
+            VALUES ('%s', '%s', '%s', '%s', %s)""" %(room_num, covid_lv, door_action, one_email, one_id)
 
             # insert data
             insert = database.insertData(sql)

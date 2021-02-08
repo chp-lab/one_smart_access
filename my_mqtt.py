@@ -4,6 +4,7 @@ from flask import request
 from database import Database
 from module import Module
 import requests
+from hooking import Hooking
 
 class My_mqtt(Resource):
     topic = "@msg/set/status/"
@@ -155,28 +156,36 @@ class My_mqtt(Resource):
             msg = ""
             help = "หมั่นล้างมือ ใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
             covid_lv = cv_json["data"]
+            # covid_lv = "red"
+            covid_lv_th = None
 
             if (covid_lv == ""):
                 door_action = "not_open"
                 msg = "data_not_found"
-                help = "กรุณาประเมิณความเสี่ยง Covid-19 กับบอท Covid tracking ก่อน"
+                help = "กรุณาประเมินความเสี่ยง Covid-19 กับบอท Covid tracking ก่อน"
+                covid_lv_th = "ยังไม่ทำแบบประเมินความเสี่ยง"
             elif (covid_lv == "green"):
                 msg = "normal"
+                covid_lv_th = "เขียว"
             elif (covid_lv == "yellow"):
                 msg = "ok"
                 help = "กรุณาใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
+                covid_lv_th = "เหลือง"
             elif (covid_lv == "orange"):
                 door_action = "open"
                 msg = "warning"
-                help = "กรุณาติดต่อเจ้าหน้าที่เพื่อขอเข้าพื้นที่"
+                help = "กรุณาใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
+                covid_lv_th = "ส้ม"
             elif (covid_lv == "red"):
                 door_action = "not_open"
                 msg = "danger"
-                help = "กรุณาติดต่อเจ้าหน้าที่เพื่อกักตัว"
+                help = "กรุณาติดต่อเจ้าหน้าที่"
+                covid_lv_th = "แดง"
             else:
                 door_action = "not_open"
                 msg = "unkonw"
                 help = "ไม่ทราบสถานะ กรุณาติดต่อเจ้าหน้าที่เพื่อขอเข้าพื้นที่"
+                covid_lv_th = "ไม่ทราบสถานะ"
 
             if (door_action == "open"):
                 self.unlock(room_num)
@@ -184,9 +193,16 @@ class My_mqtt(Resource):
             sql = """INSERT INTO covid_tracking_log (room_num, covid_level, door_action, one_email, one_id)
             VALUES ('%s', '%s', '%s', '%s', %s)""" %(room_num, covid_lv, door_action, one_email, one_id)
 
+            my_msg = None
+            if(door_action == "open"):
+                my_msg = "เปิดประตูสำเร็จ "
+            else:
+                my_msg = "ห้ามเข้าพื้นที่"
             # insert data
             insert = database.insertData(sql)
-
+            my_hooking = Hooking()
+            r = my_hooking.send_msg(one_id, my_msg + " สถานะของคุณคือ " + covid_lv_th + " " + help);
+            print(TAG, r.text)
 
             print(TAG, "insert=", insert)
 

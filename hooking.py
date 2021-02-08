@@ -73,10 +73,23 @@ class Hooking(Resource):
                 # }
                 ]
         }
-
         headers = {"Authorization": self.onechat_dev_token, "Content-Type": "application/json"}
         result = requests.post(self.onechat_url1, json=req_body, headers=headers)
         print(TAG, result.text)
+    def send_msg(self, one_id, reply_msg):
+        TAG = "send_msg:"
+        bot_id = "B75900943c6205ce084d1c5e8850d40f9"
+        headers = {"Authorization": self.onechat_dev_token, "Content-Type": "application/json"}
+        payload = {
+            "to": one_id,
+            "bot_id": bot_id,
+            "type": "text",
+            "message": reply_msg,
+            "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
+        }
+        r = requests.post(self.onechat_uri + "/message/api/v1/push_message", headers=headers, json=payload)
+        # self.menu_send(one_id, bot_id)
+        return r
 
     def post(self):
         TAG = "Hooking:"

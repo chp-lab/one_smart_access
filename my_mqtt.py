@@ -117,7 +117,7 @@ class My_mqtt(Resource):
             res[0]["help"] = "unlock success"
             print(TAG, res)
 
-            sql = """INSERT INTO access_logs (booking_number, one_email, one_id) VALUES (%s, '%s', '%s')""" %(booking_number, one_email, one_id)
+            sql = """INSERT INTO access_logs (booking_number, one_email, one_id) VALUES (%s, '%s', %s)""" %(booking_number, one_email, one_id)
             insert = database.insertData(sql)
             print(TAG, "insert=", insert)
 

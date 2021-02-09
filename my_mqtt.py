@@ -137,7 +137,7 @@ class My_mqtt(Resource):
             # cur_time = res[0]["result"][0]["CURRENT_TIMESTAMP"]
 
             print(TAG, "one_email=", one_email)
-            print(TAG, "cur_time=", cur_time)
+            # print(TAG, "cur_time=", cur_time)
 
             # call covid tracking api
             covid_tk_uri = "https://api.covid19.inet.co.th/api/v1/health/"

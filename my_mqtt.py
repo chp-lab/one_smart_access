@@ -160,39 +160,42 @@ class My_mqtt(Resource):
             msg = ""
             help = "หมั่นล้างมือ ใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
             covid_lv = cv_json["data"]
-            # covid_lv = "red"
-            covid_lv_th = None
+            # covid_lv = ""
+            # covid_lv_th = None
 
             if (covid_lv == ""):
                 door_action = "not_open"
                 door_action_th = "ปิด"
                 msg = "data_not_found"
                 help = """• สถานะประตู %s\r\n• %s น. \r\n• สถานที่ %s\r\n• คำแนะนำ กรุณาประเมินเสี่ยง Covid-19 ก่อนเข้าพื้นที่ค่ะ""" %(door_action_th, cur_time, building)
-                covid_lv_th = "ยังไม่ทำแบบประเมินความเสี่ยง"
+                # covid_lv_th = "ยังไม่ทำแบบประเมินความเสี่ยง"
             elif (covid_lv == "green"):
                 msg = "normal"
                 covid_lv_th = "เขียว"
                 door_action_th = "เปิด"
-                help = """• สถานะประตู %s\r\n• วันเวลา %s น.\r\n• สถานที่ %s\r\n• สถานะความเสี่ยงโควิดของคุณ %s""" % (door_action_th, cur_time, building, covid_lv_th)
+                help = """• สถานะประตู %s\r\n• วันเวลา %s น.\r\n• สถานที่ %s\r\n• สถานะความเสี่ยงโควิดของคุณคือ %s""" % (door_action_th, cur_time, building, covid_lv_th)
             elif (covid_lv == "yellow"):
                 msg = "ok"
-                help = "กรุณาใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
                 covid_lv_th = "เหลือง"
+                door_action_th = "เปิด"
+                help = """• สถานะประตู %s\r\n• วันเวลา %s น.\r\n• สถานที่ %s\r\n• สถานะความเสี่ยงโควิดของคุณคือ %s""" % (door_action_th, cur_time, building, covid_lv_th)
             elif (covid_lv == "orange"):
                 door_action = "open"
                 msg = "warning"
-                help = "กรุณาใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
                 covid_lv_th = "ส้ม"
+                door_action_th = "เปิด"
+                help = """• สถานะประตู %s\r\n• วันเวลา %s น.\r\n• สถานที่ %s\r\n• สถานะความเสี่ยงโควิดของคุณคือ %s""" % (door_action_th, cur_time, building, covid_lv_th)
             elif (covid_lv == "red"):
                 door_action = "not_open"
                 msg = "danger"
-                help = "กรุณาติดต่อเจ้าหน้าที่"
                 covid_lv_th = "แดง"
+                door_action_th = "ปิด"
+                help = """• สถานะประตู %s\r\n• วันเวลา %s น.\r\n• สถานที่ %s\r\n• สถานะความเสี่ยงโควิดของคุณคือ %s""" % (door_action_th, cur_time, building, covid_lv_th)
             else:
                 door_action = "not_open"
                 msg = "unkonw"
-                help = "ไม่ทราบสถานะ กรุณาติดต่อเจ้าหน้าที่เพื่อขอเข้าพื้นที่"
                 covid_lv_th = "ไม่ทราบสถานะ"
+                help = "ไม่ทราบสถานะ กรุณาติดต่อเจ้าหน้าที่เพื่อขอเข้าพื้นที่"
 
             if (door_action == "open"):
                 self.unlock(room_num)

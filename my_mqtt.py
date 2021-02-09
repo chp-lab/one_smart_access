@@ -134,10 +134,11 @@ class My_mqtt(Resource):
             one_email = json_res["data"]["email"]
             one_id = json_res['data']['one_id']
             print(TAG, "res=", res)
-            # cur_time = res[0]["result"][0]["CURRENT_TIMESTAMP"]
+            cur_time = res[0]["result"][0]["cur_time"]
+            building = res[0]["result"][0]["building"]
 
             print(TAG, "one_email=", one_email)
-            # print(TAG, "cur_time=", cur_time)
+            print(TAG, "cur_time=", cur_time)
 
             # call covid tracking api
             covid_tk_uri = "https://api.covid19.inet.co.th/api/v1/health/"
@@ -164,8 +165,12 @@ class My_mqtt(Resource):
 
             if (covid_lv == ""):
                 door_action = "not_open"
+                door_action_th = "ปิด"
                 msg = "data_not_found"
-                help = "กรุณาประเมินความเสี่ยง Covid-19 กับบอท Covid tracking ก่อน"
+                help = """• สถานะประตู %s
+                • วันเวลา %s น.
+                • สถานที่ %s
+                • คำแนะนำ กรุณาประเมินเสี่ยง Covid-19 ก่อนเข้าพื้นที่ค่ะ""" %(door_action_th, cur_time, building)
                 covid_lv_th = "ยังไม่ทำแบบประเมินความเสี่ยง"
             elif (covid_lv == "green"):
                 msg = "normal"

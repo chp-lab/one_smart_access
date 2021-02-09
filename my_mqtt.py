@@ -124,7 +124,7 @@ class My_mqtt(Resource):
             return res
         elif(guest_req == "none"):
             print(TAG, "main door req recv")
-            cmd = """SELECT rooms.building, (CURRENT_TIMESTAMP) FROM rooms WHERE rooms.room_num='%s' AND rooms.main_door=1""" % (room_num)
+            cmd = """SELECT rooms.building, (CURRENT_TIMESTAMP) as cur_time FROM rooms WHERE rooms.room_num='%s' AND rooms.main_door=1""" % (room_num)
             res = database.getData(cmd)
             print(TAG, "res=", res)
             if (res[0]['len'] == 0):

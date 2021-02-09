@@ -198,15 +198,15 @@ class My_mqtt(Resource):
             sql = """INSERT INTO covid_tracking_log (room_num, covid_level, door_action, one_email, one_id)
             VALUES ('%s', '%s', '%s', '%s', %s)""" %(room_num, covid_lv, door_action, one_email, one_id)
 
-            my_msg = None
-            if(door_action == "open"):
-                my_msg = "เปิดประตูสำเร็จ "
-            else:
-                my_msg = "ห้ามเข้าพื้นที่"
+            # my_msg = None
+            # if(door_action == "open"):
+            #     my_msg = "เปิดประตูสำเร็จ "
+            # else:
+            #     my_msg = "ห้ามเข้าพื้นที่"
             # insert data
             insert = database.insertData(sql)
             my_hooking = Hooking()
-            r = my_hooking.send_msg(one_id, my_msg + " สถานะของคุณคือ " + covid_lv_th + " " + help);
+            r = my_hooking.send_msg(one_id, help);
             print(TAG, r.text)
 
             print(TAG, "insert=", insert)

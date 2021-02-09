@@ -124,17 +124,19 @@ class My_mqtt(Resource):
             return res
         elif(guest_req == "none"):
             print(TAG, "main door req recv")
-            cmd = """SELECT rooms.building FROM rooms WHERE rooms.room_num='%s' AND rooms.main_door=1""" % (room_num)
+            cmd = """SELECT rooms.building, (CURRENT_TIMESTAMP) FROM rooms WHERE rooms.room_num='%s' AND rooms.main_door=1""" % (room_num)
             res = database.getData(cmd)
             print(TAG, "res=", res)
             if (res[0]['len'] == 0):
                 print(TAG, "bad req")
                 return module.wrongAPImsg()
-            one_id = json_res["data"]["one_id"]
+
             one_email = json_res["data"]["email"]
             one_id = json_res['data']['one_id']
+            cur_time = res[0]["result"][0]["CURRENT_TIMESTAMP"]
 
             print(TAG, "one_email=", one_email)
+            print(TAG, "cur_time=", cur_time)
 
             # call covid tracking api
             covid_tk_uri = "https://api.covid19.inet.co.th/api/v1/health/"

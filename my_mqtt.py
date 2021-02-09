@@ -133,7 +133,8 @@ class My_mqtt(Resource):
 
             one_email = json_res["data"]["email"]
             one_id = json_res['data']['one_id']
-            cur_time = res[0]["result"][0]["CURRENT_TIMESTAMP"]
+            print(TAG, "res=", res)
+            # cur_time = res[0]["result"][0]["CURRENT_TIMESTAMP"]
 
             print(TAG, "one_email=", one_email)
             print(TAG, "cur_time=", cur_time)

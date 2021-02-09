@@ -167,7 +167,7 @@ class My_mqtt(Resource):
                 door_action = "not_open"
                 door_action_th = "ปิด"
                 msg = "data_not_found"
-                help = """• สถานะประตู %s\n• %s น. \n• สถานที่ %s\n• คำแนะนำ กรุณาประเมินเสี่ยง Covid-19 ก่อนเข้าพื้นที่ค่ะ""" %(door_action_th, cur_time, building)
+                help = """• สถานะประตู %s\r\n• %s น. \r\n• สถานที่ %s\r\n• คำแนะนำ กรุณาประเมินเสี่ยง Covid-19 ก่อนเข้าพื้นที่ค่ะ""" %(door_action_th, cur_time, building)
                 covid_lv_th = "ยังไม่ทำแบบประเมินความเสี่ยง"
             elif (covid_lv == "green"):
                 msg = "normal"

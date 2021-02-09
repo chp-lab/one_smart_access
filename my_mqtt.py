@@ -172,6 +172,8 @@ class My_mqtt(Resource):
             elif (covid_lv == "green"):
                 msg = "normal"
                 covid_lv_th = "เขียว"
+                door_action_th = "เปิด"
+                help = """• สถานะประตู %s\r\n• วันเวลา %s น.\r\n• สถานที่ %s\r\n• สถานะความเสี่ยงโควิดของคุณ %s""" % (door_action_th, cur_time, building, covid_lv_th)
             elif (covid_lv == "yellow"):
                 msg = "ok"
                 help = "กรุณาใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"

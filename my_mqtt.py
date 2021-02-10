@@ -23,14 +23,15 @@ class My_mqtt(Resource):
 
     def unlock(self, room_num):
         TAG = "my_mqttinit:"
-        client_id = "12d62545-176c-4511-b3dc-61148c8e2a44"
-        token = "XxABgB71B2zssFGRcz3BrMZdJsb5G5TQ"
-        secret = "~#J0UDsDVyfkBBe$taZVetc3q-i_PL8_"
-        broker = "mqtt.netpie.io"
+        # client_id = "12d62545-176c-4511-b3dc-61148c8e2a44"
+        token = "chp-lab"
+        secret = "atop3352"
+        broker = "18.140.173.239"
         port = 1883
         keep_alive = 60
 
-        client = mqtt.Client(client_id=client_id)
+        # client = mqtt.Client(client_id=client_id)
+        client = mqtt.Client()
         client.on_connect = self.on_connect
         client.on_message = self.on_message
         client.username_pw_set(token, secret)

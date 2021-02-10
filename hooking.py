@@ -13,7 +13,7 @@ class Hooking(Resource):
     def menu_send(self, user_id, bot_id):
         TAG = "menu_send:"
         # web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
-        web_vue_url1 = "https://chatpeth.herokuapp.com/"
+        web_vue_url1 = "https://onesmartaccess.herokuapp.com/"
         req_body = {
             "to": user_id,
             "bot_id": bot_id,

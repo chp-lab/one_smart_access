@@ -56,8 +56,6 @@ class My_mqtt(Resource):
         module = Module()
         database = Database()
 
-        return module.serveErrMsg()
-
         auth_key = "Authorization"
         if(auth_key not in request.headers):
             return module.unauthorized()

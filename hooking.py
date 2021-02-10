@@ -12,7 +12,8 @@ class Hooking(Resource):
     onechat_url1 = onechat_uri + '/message/api/v1/push_quickreply'
     def menu_send(self, user_id, bot_id):
         TAG = "menu_send:"
-        web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
+        # web_vue_url1 = "https://web-meeting-room.herokuapp.com/"
+        web_vue_url1 = "https://chatpeth.herokuapp.com/"
         req_body = {
             "to": user_id,
             "bot_id": bot_id,
@@ -31,24 +32,24 @@ class Hooking(Resource):
                     "message": "ต้องการดูการจองของฉัน",
                     "payload": "list_all_booking"
                 },
-                {
-                    "label": "แสดงกุญแจของคุณ",
-                    "type": "text",
-                    "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
-                    "payload": "access_req"
-                },
+                # {
+                #     "label": "แสดงกุญแจของคุณ",
+                #     "type": "text",
+                #     "message": "ฉันต้องแสดง QR Code เพื่อเข้าห้องประชุม",
+                #     "payload": "access_req"
+                # },
                 {
                     "label": "คำเชิญ",
                     "type": "text",
                     "message": "ขอดูคำเชิญ",
                     "payload": "invite"
                 },
-                {
-                    "label": "ขอกุญแจที่ถูกเชิญ",
-                    "type": "text",
-                    "message": "ขอ QR Code ที่ถูกเชิญ",
-                    "payload": "guest_req"
-                },
+                # {
+                #     "label": "ขอกุญแจที่ถูกเชิญ",
+                #     "type": "text",
+                #     "message": "ขอ QR Code ที่ถูกเชิญ",
+                #     "payload": "guest_req"
+                # },
                 {
                     "label": "เปิดกล่อง",
                     "type": "webview",

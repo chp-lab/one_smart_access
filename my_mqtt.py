@@ -42,8 +42,10 @@ class My_mqtt(Resource):
         # Other loop*() functions are available that give a threaded interface and a
         # manual interface.
         print(TAG, "mqtt start")
+        print(TAG, "publish topic:" + self.topic + room_num, "payload:", "1")
         client.publish(self.topic + room_num, "1", qos=2)
         client.loop_start()
+        print(TAG, "client stop")
         client.loop_stop()
 
     def post(self, room_num):
@@ -113,6 +115,7 @@ class My_mqtt(Resource):
 
             booking_number = res[0]['result'][0]['booking_number']
 
+            print(TAG, "unlock room_num=", room_num)
             self.unlock(room_num)
             res[0]["help"] = "unlock success"
             print(TAG, res)

@@ -1,0 +1,7 @@
+db_param:
+  host: '18.140.173.239'
+  user: 'admin'
+  passwd: '0x00ff0000'
+  database: 'oneaccess'
+  use_unicode: True
+  charset: 'utf8'

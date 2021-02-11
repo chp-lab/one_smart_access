@@ -168,7 +168,7 @@ class My_mqtt(Resource):
             msg = ""
             help = "หมั่นล้างมือ ใส่หน้ากากอนามัยและรักษาระยะห่างจากผู้อื่น"
             covid_lv = cv_json["data"]
-            # covid_lv = ""
+            covid_lv = "red"
             # covid_lv_th = None
 
             if (covid_lv == ""):

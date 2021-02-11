@@ -10,4 +10,5 @@ class MysqlConfig:
         TAG = "callDBConfig"
         with open(self.mysql_conf_file) as my_config:
             # print(TAG, yaml.load(my_config, Loader=yaml.FullLoader))
-            return yaml.load(my_config, Loader=yaml.FullLoader)
+            # return yaml.load(my_config, Loader=yaml.FullLoader)
+            return yaml.safe_load(my_config)

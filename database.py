@@ -3,24 +3,24 @@ import time
 import datetime
 from flask_restful import Resource
 from module import Module
-from mysql_config import MysqlConfig
+# from mysql_config import MysqlConfig
 
 class Database(Resource):
     config = {}
     def __init__(self):
         TAG = "Database:"
-        # self.config = {
-        #     'host': '18.140.173.239',
-        #     'user': 'admin',
-        #     'passwd': '0x00ff0000',
-        #     'database': 'oneaccess',
-        #     'use_unicode': True,
-        #     'charset': 'utf8'
-        # }
-        mysqlConfig = MysqlConfig()
-        my_config = mysqlConfig.callDBConfig()
-        print(TAG, "my_config=", my_config)
-        self.config = my_config['db_param']
+        self.config = {
+            'host': '18.140.173.239',
+            'user': 'admin',
+            'passwd': '0x00ff0000',
+            'database': 'oneaccess',
+            'use_unicode': True,
+            'charset': 'utf8'
+        }
+        # mysqlConfig = MysqlConfig()
+        # my_config = mysqlConfig.callDBConfig()
+        # print(TAG, "my_config=", my_config)
+        # self.config = my_config['db_param']
 
     def getData(self, query_cmd):
         TAG = "Database:"

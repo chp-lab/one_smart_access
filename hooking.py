@@ -19,7 +19,15 @@ class Hooking(Resource):
             "bot_id": bot_id,
             "message": "ท่านต้องการบริการอะไรหรือไม่",
             "quick_reply":
-                [{
+                [
+                {
+                    "label": "เข้าพื้นที่",
+                    "type": "link",
+                    "url": web_vue_url1,
+                    "sign": "false",
+                    "onechat_token": "true"
+                },
+                {
                     "label": "จัดการห้อง",
                     "type": "link",
                     "url": web_vue_url1,

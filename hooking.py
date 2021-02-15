@@ -51,21 +51,21 @@ class Hooking(Resource):
                     "type": "text",
                     "message": "ขอดูคำเชิญ",
                     "payload": "invite"
-                }
+                },
                 # {
                 #     "label": "ขอกุญแจที่ถูกเชิญ",
                 #     "type": "text",
                 #     "message": "ขอ QR Code ที่ถูกเชิญ",
                 #     "payload": "guest_req"
                 # },
-                # {
-                #     "label": "เปิดกล่อง",
-                #     "type": "webview",
-                #     "url": "http://18.140.173.239:5004/",
-                #     "size": "full",
-                #     "sign": "false",
-                #     "onechat_token": "true"
-                # },
+                {
+                    "label": "เปิดกล่อง",
+                    "type": "webview",
+                    "url": "https://qrrtester.herokuapp.com/#/",
+                    "size": "full",
+                    "sign": "false",
+                    "onechat_token": "true"
+                }
                 # {
                 #     "label": "unit test",
                 #     "type": "webview",

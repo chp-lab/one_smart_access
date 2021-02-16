@@ -30,7 +30,7 @@ class My_mqtt(Resource):
         port = 1883
         keep_alive = 60
 
-        broker = "18.140.173.239"
+        broker = "localhost"
         token = "chp-lab"
         secret = "atop3352"
 

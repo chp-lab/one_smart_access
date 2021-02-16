@@ -1,5 +1,5 @@
 db_param:
-  host: '18.140.173.239'
+  host: 'localhost'
   user: 'admin'
   passwd: '0x00ff0000'
   database: 'oneaccess'

@@ -250,6 +250,7 @@ class My_mqtt(Resource):
             LIMIT 1""" %(room_num, one_email)
 
             res = database.getData(cmd)
+            print(TAG, "res=", res)
             if(res[1] != 200):
                 print(TAG, "server error")
                 return module.serveErrMsg()

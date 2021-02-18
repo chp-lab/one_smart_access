@@ -129,6 +129,8 @@ class Hooking(Resource):
             email = data['source']['email']
             one_id = data['source']['one_id']
             user_exist = self.is_user_exist(email)
+            # real is user_exist
+            # edit line bellow
             if(not user_exist):
                 print(TAG, "user exist!")
             else:

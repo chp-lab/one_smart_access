@@ -100,6 +100,17 @@ class Hooking(Resource):
         # self.menu_send(one_id, bot_id)
         return r
 
+    def is_user_exist(self, one_email):
+        TAG = "is_user_exist:"
+        cmd = """SELECT users.one_email FROM users WHERE users.one_email='%s' """ %(one_email)
+        database = Database()
+        res = database.getData(cmd)
+        print(TAG, "res=", res)
+        if(res[0]['len'] > 0):
+            return True
+        else:
+            return False
+
     def post(self):
         TAG = "Hooking:"
         database = Database()
@@ -110,12 +121,13 @@ class Hooking(Resource):
         qr_code_api = "https://api.qrserver.com/v1/create-qr-code/"
         headers = {"Authorization": onechat_dev_token}
 
-        print(TAG, data)
+        print(TAG, "data=", data)
         print(TAG, request.headers)
         if(data['event'] == "message"):
             bot_id = data['bot_id']
             user_id = data['source']['user_id']
             email = data['source']['email']
+
             print(TAG, "bot_id=", bot_id)
             print(TAG, "user_id=", user_id)
             if('data' in data['message']):

@@ -127,6 +127,7 @@ class Hooking(Resource):
             bot_id = data['bot_id']
             user_id = data['source']['user_id']
             email = data['source']['email']
+            one_id = data['source']['one_id']
             user_exist = self.is_user_exist(email)
             if(not user_exist):
                 print(TAG, "user exist!")
@@ -135,7 +136,7 @@ class Hooking(Resource):
                 # check that is req from INET employee
                 covid_tk_uri = "https://api.covid19.inet.co.th/api/v1/health/"
                 cv_token = "Bearer Q27ldU/si5gO/h5+OtbwlN5Ti8bDUdjHeapuXGJFoUP+mA0/VJ9z83cF8O+MKNcBS3wp/pNxUWUf5GrBQpjTGq/aWVugF0Yr/72fwPSTALCVfuRDir90sVl2bNx/ZUuAfA=="
-                cv = requests.get(covid_tk_uri + user_id, headers={"Authorization": cv_token})
+                cv = requests.get(covid_tk_uri + one_id, headers={"Authorization": cv_token})
                 print(TAG, "cv=", cv.json())
                 cv_json = cv.json()
                 print(TAG, "cv_json=", cv_json)

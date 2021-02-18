@@ -141,6 +141,11 @@ class Hooking(Resource):
                 cv_json = cv.json()
                 print(TAG, "cv_json=", cv_json)
 
+                if (cv_json["msg"] == "forbidden"):
+                    print(TAG, "user not in our company")
+                else:
+                    print(TAG, "add user to our system")
+
             print(TAG, "bot_id=", bot_id)
             print(TAG, "user_id=", user_id)
             if('data' in data['message']):

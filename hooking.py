@@ -132,6 +132,13 @@ class Hooking(Resource):
                 print(TAG, "user exist!")
             else:
                 print(TAG, "usr not exist!")
+                # check that is req from INET employee
+                covid_tk_uri = "https://api.covid19.inet.co.th/api/v1/health/"
+                cv_token = "Bearer Q27ldU/si5gO/h5+OtbwlN5Ti8bDUdjHeapuXGJFoUP+mA0/VJ9z83cF8O+MKNcBS3wp/pNxUWUf5GrBQpjTGq/aWVugF0Yr/72fwPSTALCVfuRDir90sVl2bNx/ZUuAfA=="
+                cv = requests.get(covid_tk_uri + user_id, headers={"Authorization": cv_token})
+                print(TAG, "cv=", cv.json())
+                cv_json = cv.json()
+                print(TAG, "cv_json=", cv_json)
 
             print(TAG, "bot_id=", bot_id)
             print(TAG, "user_id=", user_id)

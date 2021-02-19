@@ -55,6 +55,7 @@ class My_mqtt(Resource):
 
     def post(self, room_num):
         TAG= "my_mqtt:"
+        my_hooking = Hooking()
         onechat_uri = "https://chat-api.one.th"
         onechat_dev_token = "Bearer Af58c5450f3b45c71a97bc51c05373ecefabc49bd2cd94f3c88d5b844813e69a17e26a828c2b64ef889ef0c10e2aee347"
         headers = {"Authorization": onechat_dev_token, "Content-Type": "application/json"}
@@ -79,9 +80,11 @@ class My_mqtt(Resource):
         print(TAG, r.json())
 
         json_res = r.json()
+        one_id = json_res['data']['one_id']
 
         if(json_res['status'] == "fail"):
-            print(TAG, "not found in ode platform")
+            print(TAG, "not found in one platform")
+            my_hooking.send_msg(one_id, "คุณไม่มีสิทธ์เข้าถึงระบบ")
             return module.unauthorized()
 
         print(TAG, "process the req")
@@ -116,7 +119,9 @@ class My_mqtt(Resource):
                 print(TAG, "server error")
                 return module.serveErrMsg()
             if(res[0]["len"] == 0):
+                my_hooking.send_msg(one_id, "ไม่พบการจองห้อง %s ของคุณเวลานี้" % (room_num))
                 return module.measurementNotFound()
+
 
             booking_number = res[0]['result'][0]['booking_number']
 
@@ -128,6 +133,8 @@ class My_mqtt(Resource):
             sql = """INSERT INTO access_logs (booking_number, one_email) VALUES (%s, '%s')""" %(booking_number, one_email)
             insert = database.insertData(sql)
             print(TAG, "insert=", insert)
+
+            my_hooking.send_msg(one_id, "ขอต้อนรับสู่ห้อง %s เริ่มประชุม %s ถึง %s" % (room_num, meeting_start, meeting_end))
 
             return res
         elif(guest_req == "none"):
@@ -218,7 +225,7 @@ class My_mqtt(Resource):
             #     my_msg = "ห้ามเข้าพื้นที่"
             # insert data
             insert = database.insertData(sql)
-            my_hooking = Hooking()
+
             r = my_hooking.send_msg(one_id, help);
             print(TAG, r.text)
 
@@ -257,6 +264,7 @@ class My_mqtt(Resource):
                 print(TAG, "server error")
                 return module.serveErrMsg()
             if(res[0]["len"] == 0):
+                my_hooking.send_msg(one_id, "ไม่พบคำเชิญเข้าห้อง %s ของคุณเวลานี้")
                 return module.measurementNotFound()
 
             self.unlock(room_num)
@@ -264,6 +272,9 @@ class My_mqtt(Resource):
             print(TAG, res)
 
             booking_number = res[0]['result'][0]['booking_number']
+            meeting_start = res[0]['result'][0]['meeting_start']
+            meeting_end = res[0]['result'][0]['meeting_end']
+            my_hooking.send_msg(one_id, "ขอต้อนรับสู่ห้อง %s เริ่มประชุม %s ถึง %s" %(room_num, meeting_start, meeting_end))
 
             sql = """INSERT INTO access_logs (booking_number, one_email) VALUES (%s, '%s')""" % (
             booking_number, one_email)

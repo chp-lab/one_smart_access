@@ -128,6 +128,7 @@ class Hooking(Resource):
             user_id = data['source']['user_id']
             email = data['source']['email']
             one_id = data['source']['one_id']
+            name = data['source']['display_name']
             user_exist = self.is_user_exist(email)
             # real is user_exist
             # edit line bellow
@@ -136,17 +137,25 @@ class Hooking(Resource):
             else:
                 print(TAG, "usr not exist!")
                 # check that is req from INET employee
-                covid_tk_uri = "https://api.covid19.inet.co.th/api/v1/health/"
-                cv_token = "Bearer Q27ldU/si5gO/h5+OtbwlN5Ti8bDUdjHeapuXGJFoUP+mA0/VJ9z83cF8O+MKNcBS3wp/pNxUWUf5GrBQpjTGq/aWVugF0Yr/72fwPSTALCVfuRDir90sVl2bNx/ZUuAfA=="
-                cv = requests.get(covid_tk_uri + one_id, headers={"Authorization": cv_token})
-                print(TAG, "cv=", cv.json())
-                cv_json = cv.json()
-                print(TAG, "cv_json=", cv_json)
-
-                if (cv_json["msg"] == "forbidden"):
-                    print(TAG, "user not in our company")
-                else:
-                    print(TAG, "add user to our system")
+                # covid_tk_uri = "https://api.covid19.inet.co.th/api/v1/health/"
+                # cv_token = "Bearer Q27ldU/si5gO/h5+OtbwlN5Ti8bDUdjHeapuXGJFoUP+mA0/VJ9z83cF8O+MKNcBS3wp/pNxUWUf5GrBQpjTGq/aWVugF0Yr/72fwPSTALCVfuRDir90sVl2bNx/ZUuAfA=="
+                # cv = requests.get(covid_tk_uri + one_id, headers={"Authorization": cv_token})
+                # print(TAG, "cv=", cv.json())
+                # cv_json = cv.json()
+                # print(TAG, "cv_json=", cv_json)
+                #
+                # if (cv_json["msg"] == "forbidden"):
+                #     print(TAG, "user not in our company")
+                #     # send message via bot to reject user
+                #     # api return
+                # else:
+                #     # add user to database
+                #     # process continue
+                print(TAG, "add user to our system")
+                sql = """INSERT INTO `users` (`one_email`, `name`) VALUES ('test.ae@one.th', 'fname lname', CURRENT_TIMESTAMP)""" \
+                      % (email, name)
+                insert = database.insertData(sql)
+                print(TAG, "insert=", insert)
 
             print(TAG, "bot_id=", bot_id)
             print(TAG, "user_id=", user_id)

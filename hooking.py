@@ -132,7 +132,7 @@ class Hooking(Resource):
             user_exist = self.is_user_exist(email)
             # real is user_exist
             # edit line bellow
-            if(not user_exist):
+            if(user_exist):
                 print(TAG, "user exist!")
             else:
                 print(TAG, "usr not exist!")

@@ -81,13 +81,14 @@ class My_mqtt(Resource):
 
         json_res = r.json()
         print(TAG, "json_res=", json_res)
-        one_id = json_res['data']['one_id']
+
 
         if(json_res['status'] == "fail"):
             print(TAG, "not found in one platform")
-            my_hooking.send_msg(one_id, "คุณไม่มีสิทธ์เข้าถึงระบบ")
+            # my_hooking.send_msg(one_id, "คุณไม่มีสิทธ์เข้าถึงระบบ")
             return module.unauthorized()
 
+        one_id = json_res['data']['one_id']
         print(TAG, "process the req")
 
         guest_req_key = "guest_req"

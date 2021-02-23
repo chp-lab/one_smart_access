@@ -300,8 +300,16 @@ class My_mqtt(Resource):
                 "message": "success",
                 "error_message": None,
                 "len": 0,
-                "result": [],
-                "help": "unlock success"
+                "result": [
+                    {
+                        "booking_number": 0,
+                        "meeting_start": "always always",
+                        "meeting_end": "always always",
+                        "room_num": room_num,
+                        "agenda": "สิทธิ์แอดมิน",
+                        "help": "unlock success"
+                    }
+                ]
             }
 
             return res

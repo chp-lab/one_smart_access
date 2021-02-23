@@ -289,7 +289,7 @@ class My_mqtt(Resource):
             return res
         elif(guest_req == "admin"):
             print(TAG, "admin req recv")
-            cmd = """SELECT users.name WHERE users.one_email='%s' AND users.role='admin'""" %(one_email)
+            cmd = """SELECT users.name FROM users WHERE users.one_email='%s' AND users.role='admin'""" %(one_email)
             res = database.getData(cmd)
             print(TAG, "res=", res)
             if(res[0]['len'] == 0):

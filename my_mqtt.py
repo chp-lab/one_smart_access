@@ -291,6 +291,7 @@ class My_mqtt(Resource):
             print(TAG, "admin req recv")
             cmd = """SELECT users.name WHERE users.one_email='%s' AND users.role='admin'""" %(one_email)
             res = database.getData(cmd)
+            print(TAG, "res=", res)
             if(res[0]['len'] == 0):
                 return module.unauthorized()
             self.unlock(room_num)

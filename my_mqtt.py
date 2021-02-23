@@ -77,9 +77,10 @@ class My_mqtt(Resource):
 
         r = requests.post(onechat_uri + "/manage/api/v1/getprofile", headers=headers, json=payload)
         print(TAG, "response code=", r.status_code)
-        print(TAG, r.json())
+        # print(TAG, r.json())
 
         json_res = r.json()
+        print(TAG, "json_res=", json_res)
         one_id = json_res['data']['one_id']
 
         if(json_res['status'] == "fail"):
@@ -122,7 +123,8 @@ class My_mqtt(Resource):
                 my_hooking.send_msg(one_id, "ไม่พบการจองห้อง %s ของคุณเวลานี้" % (room_num))
                 return module.measurementNotFound()
 
-
+            meeting_start = res[0]['result'][0]['meeting_start']
+            meeting_end = res[0]['result'][0]['meeting_end']
             booking_number = res[0]['result'][0]['booking_number']
 
             print(TAG, "unlock room_num=", room_num)

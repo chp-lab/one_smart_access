@@ -299,7 +299,7 @@ class My_mqtt(Resource):
                 "type": True,
                 "message": "success",
                 "error_message": None,
-                "len": 0,
+                "len": 1,
                 "result": [
                     {
                         "booking_number": 0,

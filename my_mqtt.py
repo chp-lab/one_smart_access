@@ -303,8 +303,8 @@ class My_mqtt(Resource):
                 "result": [
                     {
                         "booking_number": 0,
-                        "meeting_start": "always always",
-                        "meeting_end": "always always",
+                        "meeting_start": "-",
+                        "meeting_end": "-",
                         "room_num": room_num,
                         "agenda": "สิทธิ์แอดมิน",
                         "help": "unlock success"

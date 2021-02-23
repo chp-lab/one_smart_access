@@ -103,10 +103,11 @@ class My_mqtt(Resource):
 
         guest_req = args.get(guest_req_key)
         print(TAG, "guest_req=", guest_req)
+        one_email = json_res['data']['email']
 
         if(guest_req == "no"):
             print(TAG, "owner req recv")
-            one_email = json_res['data']['email']
+            # one_email = json_res['data']['email']
             # check are there any booking
             cmd = """SELECT bookings.booking_number, bookings.meeting_start, bookings.meeting_end, bookings.room_num, bookings.agenda
             FROM bookings 
@@ -149,7 +150,7 @@ class My_mqtt(Resource):
                 print(TAG, "bad req")
                 return module.wrongAPImsg()
 
-            one_email = json_res["data"]["email"]
+            # one_email = json_res["data"]["email"]
             one_id = json_res['data']['one_id']
             print(TAG, "res=", res)
             cur_time = res[0]["result"][0]["cur_time"]
@@ -250,7 +251,7 @@ class My_mqtt(Resource):
             return result
         elif(guest_req == "yes"):
             print(TAG, "guest_req recv")
-            one_email = json_res['data']['email']
+            # one_email = json_res['data']['email']
 
             cmd = """SELECT bookings.booking_number, bookings.meeting_start, bookings.meeting_end, bookings.room_num, bookings.agenda
             FROM bookings
@@ -284,6 +285,23 @@ class My_mqtt(Resource):
 
             insert = database.insertData(sql)
             print(TAG, "insert=", insert)
+
+            return res
+        elif(guest_req == "admin"):
+            print(TAG, "admin req recv")
+            cmd = """SELECT users.name WHERE users.one_email='%s' AND users.role='admin'""" %(one_email)
+            res = database.getData(cmd)
+            if(res[0]['len'] == 0):
+                return module.unauthorized()
+            self.unlock(room_num)
+            res = {
+                "type": True,
+                "message": "success",
+                "error_message": None,
+                "len": 0,
+                "result": [],
+                "help": "unlock success"
+            }
 
             return res
         else:

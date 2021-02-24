@@ -69,7 +69,7 @@ class Hooking(Resource):
                 {
                     "label": "Box",
                     "type": "webview",
-                    "url": "http://onesmartaccess.ddns.net:5001/",
+                    "url": "http://onesmartaccess.ddns.net:5001/botmenu/medicinebox",
                     "size": "full",
                     "sign": "false",
                     "onechat_token": "true"

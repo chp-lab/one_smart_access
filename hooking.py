@@ -65,15 +65,15 @@ class Hooking(Resource):
                     "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
+                },
+                {
+                    "label": "Box",
+                    "type": "webview",
+                    "url": "http://onesmartaccess.ddns.net:5001/",
+                    "size": "full",
+                    "sign": "false",
+                    "onechat_token": "true"
                 }
-                # {
-                #     "label": "unit test",
-                #     "type": "webview",
-                #     "url": "https://qrrtester.herokuapp.com/#/",
-                #     "size": "full",
-                #     "sign": "false",
-                #     "onechat_token": "true"
-                # }
                 # {
                 #     "label": "จองห้อง",
                 #     "type": "text",

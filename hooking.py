@@ -77,7 +77,7 @@ class Hooking(Resource):
                 {
                     "label": "OBox",
                     "type": "webview",
-                    "url": "http://onesmartaccess.ddns.net:9000/",
+                    "url": "http://onesmartaccess.ddns.net:9000/examples/simple/",
                     "size": "full",
                     "sign": "false",
                     "onechat_token": "true"

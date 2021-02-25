@@ -73,15 +73,15 @@ class Hooking(Resource):
                     "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
+                },
+                {
+                    "label": "OBox",
+                    "type": "webview",
+                    "url": "http://onesmartaccess.ddns.net:9000/",
+                    "size": "full",
+                    "sign": "false",
+                    "onechat_token": "true"
                 }
-                # {
-                #     "label": "OBox",
-                #     "type": "webview",
-                #     "url": "http://bot-thing.nexpie.com/botmenu/medicinebox-example",
-                #     "size": "full",
-                #     "sign": "false",
-                #     "onechat_token": "true"
-                # }
                 ]
         }
         headers = {"Authorization": self.onechat_dev_token, "Content-Type": "application/json"}

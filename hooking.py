@@ -73,13 +73,15 @@ class Hooking(Resource):
                     "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
+                },
+                {
+                    "label": "OBox",
+                    "type": "webview",
+                    "url": "http://bot-thing.nexpie.com/botmenu/medicinebox-example",
+                    "size": "full",
+                    "sign": "false",
+                    "onechat_token": "true"
                 }
-                # {
-                #     "label": "จองห้อง",
-                #     "type": "text",
-                #     "message": "ต้องการจองห้อง",
-                #     "payload": {"booking_req":True,"booking_state":"start"}
-                # }
                 ]
         }
         headers = {"Authorization": self.onechat_dev_token, "Content-Type": "application/json"}

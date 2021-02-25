@@ -81,6 +81,14 @@ class Hooking(Resource):
                     "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
+                },
+                {
+                    "label": "Farm",
+                    "type": "webview",
+                    "url": "https://9eb2bbd4d505.ngrok.io/",
+                    "size": "full",
+                    "sign": "false",
+                    "onechat_token": "true"
                 }
                 ]
         }

@@ -232,7 +232,7 @@ class Hooking(Resource):
                         print(TAG, r.text)
                 elif(data['message']['data'] == "list_all_booking"):
                     print(TAG, "list all access")
-                    cmd = """SELECT bookings.booking_number bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
+                    cmd = """SELECT bookings.booking_number, bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
                     FROM bookings 
                     WHERE bookings.one_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND bookings.eject_at IS NULL
                     ORDER BY bookings.meeting_start""" %(email)

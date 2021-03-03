@@ -162,7 +162,7 @@ class Hooking(Resource):
                 #     # add user to database
                 #     # process continue
                 print(TAG, "add user to our system")
-                sql = """INSERT INTO `users` (`one_email`, `name`, `one_id`) VALUES ('%s', '%s', `%s`)""" \
+                sql = """INSERT INTO `users` (`one_email`, `name`, `one_id`) VALUES ('%s', '%s', '%s')""" \
                       % (email, name, one_id)
                 insert = database.insertData(sql)
                 print(TAG, "insert=", insert)

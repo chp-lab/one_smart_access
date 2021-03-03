@@ -232,7 +232,7 @@ class Hooking(Resource):
                         print(TAG, r.text)
                 elif(data['message']['data'] == "list_all_booking"):
                     print(TAG, "list all access")
-                    cmd = """SELECT bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
+                    cmd = """SELECT bookings.booking_number bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end 
                     FROM bookings 
                     WHERE bookings.one_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND bookings.eject_at IS NULL
                     ORDER BY bookings.meeting_start""" %(email)
@@ -244,8 +244,8 @@ class Hooking(Resource):
                         for i in range(res[0]['len']):
                             print(TAG, "booking:", booking_list[i])
                             tmp_list = booking_list[i]
-                            reply_msg = reply_msg + """%s.ห้อง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
-                                           %(i + 1, tmp_list['room_num'], tmp_list['agenda'],
+                            reply_msg = reply_msg + """%s.เลขที่การจอง %s ห้อง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
+                                           %(i + 1, tmp_list['booking_number'], tmp_list['room_num'], tmp_list['agenda'],
                                              tmp_list['meeting_start'], tmp_list['meeting_end'])
 
                         payload = {

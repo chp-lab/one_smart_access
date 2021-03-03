@@ -244,7 +244,7 @@ class Hooking(Resource):
                         for i in range(res[0]['len']):
                             print(TAG, "booking:", booking_list[i])
                             tmp_list = booking_list[i]
-                            reply_msg = reply_msg + """%s.ห้อง %s เลขที่การจอง:%s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
+                            reply_msg = reply_msg + """%s.ห้อง %s เลขที่การจอง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
                                            %(i + 1, tmp_list['room_num'], tmp_list['booking_number'], tmp_list['agenda'],
                                              tmp_list['meeting_start'], tmp_list['meeting_end'])
 
@@ -260,7 +260,7 @@ class Hooking(Resource):
                         self.menu_send(user_id, bot_id)
                 elif (data['message']['data'] == "invite"):
                     print(TAG, "list all valid invite")
-                    cmd = """SELECT bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end FROM bookings
+                    cmd = """SELECT bookings.booking_number, bookings.room_num, bookings.agenda, bookings.meeting_start, bookings.meeting_end FROM bookings
                     LEFT JOIN guests ON bookings.booking_number = guests.booking_number
                     WHERE guests.guest_email='%s' AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND bookings.eject_at IS NULL""" %(email)
 
@@ -272,8 +272,8 @@ class Hooking(Resource):
                         for i in range(res[0]['len']):
                             print(TAG, "booking:", booking_list[i])
                             tmp_list = booking_list[i]
-                            reply_msg = reply_msg + """%s.ห้อง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
-                                        % (i + 1, tmp_list['room_num'], tmp_list['agenda'],
+                            reply_msg = reply_msg + """%s.ห้อง %s เลขที่การจอง %s เหตุผล %s เวลาเริ่มต้น %s เวลาสิ้นสุด %s\n""" \
+                                        % (i + 1, tmp_list['room_num'], tmp_list['booking_number'], tmp_list['agenda'],
                                            tmp_list['meeting_start'], tmp_list['meeting_end'])
 
                         payload = {

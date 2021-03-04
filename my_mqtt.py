@@ -68,7 +68,7 @@ class My_mqtt(Resource):
         if(auth_key not in request.headers):
             return module.unauthorized()
 
-        auth = request.headers.get("Authorization");
+        auth = request.headers.get("Authorization")
         print(TAG, "auth=", auth)
         payload = {
             "bot_id":bot_id,
@@ -81,7 +81,6 @@ class My_mqtt(Resource):
 
         json_res = r.json()
         print(TAG, "json_res=", json_res)
-
 
         if(json_res['status'] == "fail"):
             print(TAG, "not found in one platform")
@@ -318,10 +317,35 @@ class My_mqtt(Resource):
                     }
                 ]
             }
+            return res
+        elif (guest_req == "checkin"):
+            print(TAG, "checkin req recv")
+            cmd = """SELECT users.name, users.one_email, users.one_id FROM users WHERE users.one_email='%s'""" % (one_email)
+            res = database.getData(cmd)
 
+            print(TAG, "res=", res)
+            if (res[0]['len'] == 0):
+                return module.unauthorized()
+            user_data = res[0]['result'][0]
+            self.unlock(room_num)
+            res = {
+                "type": True,
+                "message": "success",
+                "error_message": None,
+                "len": 1,
+                "result": [
+                    {
+                        "door":"open_success",
+                        "one_email":user_data['one_email'],
+                        "one_id":user_data['one_id'],
+                        "nickname":user_data['name']
+                    }
+                ]
+            }
             return res
         else:
             return module.wrongAPImsg()
+
 
 if (__name__ == "__main__"):
     my_mqtt = My_mqtt()

@@ -121,6 +121,15 @@ class Hooking(Resource):
         else:
             return False
 
+    def add_new_user(self, email, name, one_id):
+        TAG = "add_new_user"
+        database = Database()
+        print(TAG, "add user to our system")
+        sql = """INSERT INTO `users` (`one_email`, `name`, `one_id`) VALUES ('%s', '%s', '%s')""" \
+              % (email, name, one_id)
+        insert = database.insertData(sql)
+        return insert
+
     def post(self):
         TAG = "Hooking:"
         database = Database()
@@ -161,11 +170,13 @@ class Hooking(Resource):
                 # else:
                 #     # add user to database
                 #     # process continue
-                print(TAG, "add user to our system")
-                sql = """INSERT INTO `users` (`one_email`, `name`, `one_id`) VALUES ('%s', '%s', '%s')""" \
-                      % (email, name, one_id)
-                insert = database.insertData(sql)
-                print(TAG, "insert=", insert)
+                # print(TAG, "add user to our system")
+                # sql = """INSERT INTO `users` (`one_email`, `name`, `one_id`) VALUES ('%s', '%s', '%s')""" \
+                #       % (email, name, one_id)
+                # insert = database.insertData(sql)
+                # print(TAG, "insert=", insert)
+                add_user = self.add_new_user(email, name, one_id)
+                print(TAG, "add=new_user=", add_user)
 
             print(TAG, "bot_id=", bot_id)
             print(TAG, "user_id=", user_id)

@@ -7,6 +7,7 @@ from hooking import Hooking
 from qr_decode import Qr_decode
 from my_mqtt import My_mqtt
 from monitor import Monitor
+from covid_log import Covid_log
 
 class Server:
     app = None
@@ -33,5 +34,5 @@ if (__name__ == "__main__"):
     server.api.add_resource(Hooking, API_VERSION + "/hooking")
     server.api.add_resource(Qr_decode, API_VERSION + "/myqr")
     server.api.add_resource(My_mqtt, API_VERSION + "/unlock/<room_num>")
-
+    server.api.add_resource(Covid_log, API_VERSION + "/covid/log")
     server.app.run(host="0.0.0.0", debug=False, port=5003)

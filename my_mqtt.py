@@ -327,6 +327,14 @@ class My_mqtt(Resource):
             if (res[0]['len'] == 0):
                 return module.unauthorized()
             user_data = res[0]['result'][0]
+
+            cmd = """SELECT rooms.building, (CURRENT_TIMESTAMP) as cur_time FROM rooms WHERE rooms.room_num='%s' AND rooms.main_door=1""" % (room_num)
+            res = database.getData(cmd)
+            print(TAG, "res=", res)
+            if (res[0]['len'] == 0):
+                print(TAG, "bad req")
+                return module.unauthorized()
+
             self.unlock(room_num)
             res = {
                 "type": True,

@@ -59,7 +59,7 @@ class Monitor():
         for eject in ejectings:
             print(TAG, "eject=", eject)
             one_id = eject['one_id']
-            reply_msg = """ขออภัยค่ะ ท่านไม่ได้เข้าใช้การจองเลขที่ %s ในเวลาที่กำหนด เริ่มเวลา %s สิ้นสุดเวลา %s ห้อง %s เหตุผล %s ระบบจะยกเลิกการจองโดยอัตโนมัติ กรุณาทำการจองใหม่ ขอบคุณค่ะ""" \
+            reply_msg = """ขออภัยค่ะ ท่านหรือแขกของท่านไม่ได้เข้าใช้การจองเลขที่ %s ในเวลาที่กำหนด เริ่มเวลา %s สิ้นสุดเวลา %s ห้อง %s เหตุผล %s ระบบจะยกเลิกการจองโดยอัตโนมัติ กรุณาทำการจองใหม่ ขอบคุณค่ะ""" \
                         %(eject['booking_number'], eject['meeting_start'], eject['meeting_end'], eject['room_num'], eject['agenda'])
             hooking.send_msg(one_id, reply_msg)
             cmd_update = """UPDATE `bookings` SET `eject_at` = CURRENT_TIMESTAMP WHERE `bookings`.`booking_number` = %s""" %(eject['booking_number'])

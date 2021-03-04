@@ -104,6 +104,13 @@ class My_mqtt(Resource):
         guest_req = args.get(guest_req_key)
         print(TAG, "guest_req=", guest_req)
         one_email = json_res['data']['email']
+        name = json_res['data']['nickname']
+
+        userExist = my_hooking.is_user_exist(one_email)
+
+        if(not userExist):
+            print(TAG, "add new user to the system")
+            my_hooking.add_new_user(one_email, name, one_id)
 
         if(guest_req == "no"):
             print(TAG, "owner req recv")

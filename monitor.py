@@ -52,7 +52,8 @@ class Monitor():
         FROM bookings
         LEFT JOIN users ON bookings.one_email=users.one_email
         LEFT JOIN access_logs ON bookings.booking_number=access_logs.booking_number
-        WHERE bookings.meeting_start < (CURRENT_TIMESTAMP) AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND bookings.eject_at IS NULL AND access_logs.one_email IS NULL"""
+        WHERE bookings.meeting_end > (CURRENT_TIMESTAMP) AND bookings.eject_at IS NULL AND access_logs.one_email IS NULL AND 
+        ((TIME_TO_SEC(CURRENT_TIMESTAMP) - TIME_TO_SEC(bookings.meeting_start))/60 >= 30) AND bookings.meeting_start < (CURRENT_TIMESTAMP)"""
 
         res_eject = database.getData(cmd_eject)
         ejectings = res_eject[0]['result']

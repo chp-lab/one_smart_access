@@ -47,6 +47,24 @@ class Monitor():
             reply_msg = """คำเชิญจากเลขที่การจอง %s กำลังจะถึงเวลาเริ่ม %s สิ้นสุดเวลา %s ห้อง %s เหตุผล %s เรียนเชิญเข้าร่วมค่ะ""" %(book['booking_number'], book['meeting_start'], book['meeting_end'], book['room_num'], book['agenda'])
             hooking.send_msg(one_id, reply_msg)
 
+        cmd_eject = """SELECT bookings.booking_number, users.one_id, bookings.one_email, bookings.meeting_start, bookings.meeting_end, bookings.agenda, bookings.room_num, (CURRENT_TIMESTAMP) AS cur_time,
+        (TIME_TO_SEC((CURRENT_TIMESTAMP)) - (TIME_TO_SEC(bookings.meeting_start)))/60 AS minute_after_start, access_logs.log_id, access_logs.one_email AS access_by, access_logs.created_at AS acess_at
+        FROM bookings
+        LEFT JOIN users ON bookings.one_email=users.one_email
+        LEFT JOIN access_logs ON bookings.booking_number=access_logs.booking_number
+        WHERE bookings.meeting_start < (CURRENT_TIMESTAMP) AND bookings.meeting_end > (CURRENT_TIMESTAMP) AND bookings.eject_at IS NULL AND access_logs.one_email IS NULL"""
+
+        res_eject = database.getData(cmd_eject)
+        ejectings = res_eject[0]['result']
+        for eject in ejectings:
+            print(TAG, "eject=", eject)
+            one_id = eject['one_id']
+            reply_msg = """ขออภัยค่ะ ท่านไม่ได้เข้าใช้การจองเลขที่ %s ในเวลาที่กำหนด เริ่มเวลา %s สิ้นสุดเวลา %s ห้อง %s เหตุผล %s ระบบจะยกเลิกการจองโดยอัตโนมัติ กรุณาทำการจองใหม่ ขอบคุณค่ะ""" \
+                        %(eject['booking_number'], eject['meeting_start'], eject['meeting_end'], eject['room_num'], eject['agenda'])
+            hooking.send_msg(one_id, reply_msg)
+            cmd_update = """UPDATE `bookings` SET `eject_at` = CURRENT_TIMESTAMP WHERE `bookings`.`booking_number` = %s""" %(eject['booking_number'])
+            insert = database.insertData(cmd_update)
+            print(TAG, "insert=",insert)
         return False
 
     def setInterval(self, timer, task):

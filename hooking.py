@@ -1,7 +1,7 @@
 # -- coding: utf-8 --
 
-from flask_restful import Resource, reqparse
-from flask import Flask, request, jsonify
+from flask_restful import Resource
+from flask import request
 import requests
 from database import Database
 from module import Module
@@ -67,29 +67,29 @@ class Hooking(Resource):
                     "onechat_token": "true"
                 },
                 {
-                    "label": "Box",
+                    "label": "Dev",
                     "type": "webview",
-                    "url": "http://onesmartaccess.ddns.net:5001/botmenu/medicinebox",
-                    "size": "full",
-                    "sign": "false",
-                    "onechat_token": "true"
-                },
-                {
-                    "label": "OBox",
-                    "type": "webview",
-                    "url": "http://onesmartaccess.ddns.net:9000/examples/simple/",
-                    "size": "full",
-                    "sign": "false",
-                    "onechat_token": "true"
-                },
-                {
-                    "label": "Farm",
-                    "type": "webview",
-                    "url": "https://9eb2bbd4d505.ngrok.io/",
+                    "url": "http://192.168.73.165:8080",
                     "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
                 }
+                # {
+                #     "label": "OBox",
+                #     "type": "webview",
+                #     "url": "http://onesmartaccess.ddns.net:9000/examples/simple/",
+                #     "size": "full",
+                #     "sign": "false",
+                #     "onechat_token": "true"
+                # },
+                # {
+                #     "label": "Farm",
+                #     "type": "webview",
+                #     "url": "https://9eb2bbd4d505.ngrok.io/",
+                #     "size": "full",
+                #     "sign": "false",
+                #     "onechat_token": "true"
+                # }
                 ]
         }
         headers = {"Authorization": self.onechat_dev_token, "Content-Type": "application/json"}
@@ -122,7 +122,7 @@ class Hooking(Resource):
             return False
 
     def add_new_user(self, email, name, one_id):
-        TAG = "add_new_user"
+        TAG = "add_new_user:"
         database = Database()
         print(TAG, "add user to our system")
         sql = """INSERT INTO `users` (`one_email`, `name`, `one_id`) VALUES ('%s', '%s', '%s')""" \

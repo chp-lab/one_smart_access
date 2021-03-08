@@ -67,13 +67,12 @@ class Hooking(Resource):
                     "onechat_token": "true"
                 },
                 {
-                    "label": "Dev",
-                    "type": "webview",
+                    "label": "dev",
+                    "type": "link",
                     "url": "http://192.168.73.165:8080",
-                    "size": "full",
                     "sign": "false",
                     "onechat_token": "true"
-                }
+                },
                 # {
                 #     "label": "OBox",
                 #     "type": "webview",

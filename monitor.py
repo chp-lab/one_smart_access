@@ -38,13 +38,13 @@ class Monitor():
             print(TAG, "book=", book)
             one_id = book['one_id']
 
-            reply_msg = """การจองเลขที่ %s ของคุณกำลังจะถึงเวลาเริ่ม %s สิ้นสุดเวลา %s ห้อง %s เหตุผล %s กรุณาเข้าห้องก่อนเวลา %s""" %(book['booking_number'], book['meeting_start'], book['meeting_end'], book['room_num'], book['agenda'], book['booking_time_out'])
+            reply_msg = """การจองเลขที่ %s ของคุณ จะถึงเวลาเริ่ม %s สิ้นสุดเวลา %s ห้อง %s เหตุผล %s กรุณาเข้าห้องก่อนเวลา %s""" %(book['booking_number'], book['meeting_start'], book['meeting_end'], book['room_num'], book['agenda'], book['booking_time_out'])
             hooking.send_msg(one_id, reply_msg)
 
         for book in guests:
             print(TAG, "guest=", book)
             one_id = book['one_id']
-            reply_msg = """คำเชิญจากเลขที่การจอง %s กำลังจะถึงเวลาเริ่ม %s สิ้นสุดเวลา %s ห้อง %s เหตุผล %s เรียนเชิญเข้าร่วมค่ะ""" %(book['booking_number'], book['meeting_start'], book['meeting_end'], book['room_num'], book['agenda'])
+            reply_msg = """คำเชิญจากเลขที่การจอง %s จะถึงเวลาเริ่ม %s สิ้นสุดเวลา %s ห้อง %s เหตุผล %s เรียนเชิญเข้าร่วมค่ะ""" %(book['booking_number'], book['meeting_start'], book['meeting_end'], book['room_num'], book['agenda'])
             hooking.send_msg(one_id, reply_msg)
 
         cmd_eject = """SELECT bookings.booking_number, users.one_id, bookings.one_email, bookings.meeting_start, bookings.meeting_end, bookings.agenda, bookings.room_num, (CURRENT_TIMESTAMP) AS cur_time,

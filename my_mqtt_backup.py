@@ -85,42 +85,7 @@ class My_mqtt(Resource):
         if(json_res['status'] == "fail"):
             print(TAG, "not found in one platform")
             # my_hooking.send_msg(one_id, "คุณไม่มีสิทธ์เข้าถึงระบบ")
-            if(json_res['message'] == "Friend not found"):
-                print(TAG, "Friend not found, opened by anonymous")
-                guest_req_key = "guest_req"
-                secret_key = "secret_key"
-                parser = reqparse.RequestParser()
-                parser.add_argument(guest_req_key)
-                args = parser.parse_args()
-                guest_req = args.get(guest_req_key)
-                secret = args.get(secret_key)
-                print(TAG, "guest_req=", guest_req, "secret=", secret)
-                if(guest_req != "guest_req"):
-                    return module.wrongAPImsg()
-                my_secret = "9qn1a2MTswD52m6PfU1kdLgfJK4NDoem!HRjRng!F_8AAv*c!*bOCLVxOSj9-XKZ"
-                if(secret != my_secret):
-                    print(TAG, "You don't know the trust!")
-                    return module.unauthorized()
-                print(TAG, "unlocking")
-                self.unlock(room_num)
-                print(TAG, "unlock complete")
-                res = {
-                    "type": True,
-                    "message": "success",
-                    "error_message": None,
-                    "len": 1,
-                    "result": [
-                        {
-                            "door": "open_success",
-                            "one_email": "anonymouse",
-                            "one_id": "anonymouse",
-                            "nickname": "anonymouse"
-                        }
-                    ]
-                }
-                return res
-            else:
-                return module.unauthorized()
+            return module.unauthorized()
 
         one_id = json_res['data']['one_id']
         print(TAG, "process the req")

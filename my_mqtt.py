@@ -90,11 +90,15 @@ class My_mqtt(Resource):
                 guest_req_key = "guest_req"
                 secret_key = "secret_key"
                 parser = reqparse.RequestParser()
+
                 parser.add_argument(guest_req_key)
+                parser.add_argument(secret_key)
+
                 args = parser.parse_args()
                 guest_req = args.get(guest_req_key)
                 secret = args.get(secret_key)
                 print(TAG, "guest_req=", guest_req, "secret=", secret)
+
                 if(guest_req != "guest_req"):
                     return module.wrongAPImsg()
                 my_secret = "9qn1a2MTswD52m6PfU1kdLgfJK4NDoem!HRjRng!F_8AAv*c!*bOCLVxOSj9-XKZ"

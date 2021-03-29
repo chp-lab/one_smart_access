@@ -99,7 +99,8 @@ class My_mqtt(Resource):
                 secret = args.get(secret_key)
                 print(TAG, "guest_req=", guest_req, "secret=", secret)
 
-                if(guest_req != "guest_req"):
+                if(guest_req != "checkin"):
+                    print(TAG, "you call apiin wrong way, guest_req=", guest_req)
                     return module.wrongAPImsg()
                 my_secret = "9qn1a2MTswD52m6PfU1kdLgfJK4NDoem!HRjRng!F_8AAv*c!*bOCLVxOSj9-XKZ"
                 if(secret != my_secret):

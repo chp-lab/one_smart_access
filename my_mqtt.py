@@ -68,7 +68,64 @@ class My_mqtt(Resource):
         if(auth_key not in request.headers):
             return module.unauthorized()
 
+        anonymouse_token = "XxABgB71B2zssFGRcz3BrMZdJsb5G5TQ~#J0UDsDVyfkBBe$taZVetc3q-i_PL8_ST3cETapN7KutBVHFJRxKd86Kj4DUeoGPR8p#HK5ykKx5fjcp03G)E2C_IMp*C9w"
+        my_secret = "9qn1a2MTswD52m6PfU1kdLgfJK4NDoem!HRjRng!F_8AAv*c!*bOCLVxOSj9-XKZ"
+
         auth = request.headers.get("Authorization")
+
+        if(auth == anonymouse_token):
+            print(TAG, "default perm detected")
+            guest_req_key = "guest_req"
+            secret_key = "secret_key"
+            one_id_key = "one_id"
+
+            parser = reqparse.RequestParser()
+
+            parser.add_argument(guest_req_key)
+            parser.add_argument(secret_key)
+            parser.add_argument(one_id_key)
+
+            args = parser.parse_args()
+            guest_req = args.get(guest_req_key)
+            secret = args.get(secret_key)
+            one_id = args.get(one_id_key)
+
+            print(TAG, "guest_req=", guest_req, "secret=", secret)
+            print(TAG, "one_id=", one_id)
+
+            if (one_id is None):
+                print(TAG, "Bad api calling")
+                return module.wrongAPImsg()
+
+            if (guest_req != "checkin"):
+                print(TAG, "you call apiin wrong way, guest_req=", guest_req)
+                return module.wrongAPImsg()
+
+            if (secret != my_secret):
+                print(TAG, "You don't know the trust!")
+                return module.unauthorized()
+
+            print(TAG, "unlocking")
+            self.unlock(room_num)
+            print(TAG, "unlock complete")
+            res = {
+                "type": True,
+                "message": "success",
+                "error_message": None,
+                "len": 1,
+                "result": [
+                    {
+                        "door": "open_success",
+                        "one_email": "",
+                        "one_id": one_id,
+                        "nickname": ""
+                    }
+                ]
+            }
+            return res
+
+
+
         print(TAG, "auth=", auth)
         payload = {
             "bot_id":bot_id,
@@ -102,7 +159,7 @@ class My_mqtt(Resource):
                 if(guest_req != "checkin"):
                     print(TAG, "you call apiin wrong way, guest_req=", guest_req)
                     return module.wrongAPImsg()
-                my_secret = "9qn1a2MTswD52m6PfU1kdLgfJK4NDoem!HRjRng!F_8AAv*c!*bOCLVxOSj9-XKZ"
+
                 if(secret != my_secret):
                     print(TAG, "You don't know the trust!")
                     return module.unauthorized()

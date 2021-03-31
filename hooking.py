@@ -67,9 +67,9 @@ class Hooking(Resource):
                     "onechat_token": "true"
                 },
                 {
-                    "label": "dev",
+                    "label": "Game",
                     "type": "link",
-                    "url": "http://192.168.73.165:8080",
+                    "url": "http://18.140.173.239:8082",
                     "sign": "false",
                     "onechat_token": "true"
                 },

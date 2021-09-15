@@ -90,7 +90,7 @@ class My_mqtt(Resource):
             secret = args.get(secret_key)
             one_id = args.get(one_id_key)
 
-            print(TAG, "guest_req=", guest_req, "secret=", secret)
+            print(TAG, "guest_req=", guest_req, ",secret=", secret)
             print(TAG, "one_id=", one_id)
 
             if (one_id is None):
@@ -108,6 +108,17 @@ class My_mqtt(Resource):
             print(TAG, "unlocking")
             self.unlock(room_num)
             print(TAG, "unlock complete")
+
+            user_cmd = """SELECT users.one_email, users.name FROM users WHERE users.one_id='%s'""" %(one_id)
+            one_email = "";
+            nickname = ""
+
+            user_rec = database.getData(user_cmd)
+            print(TAG, "user_rec=", user_rec)
+            if(user_rec[0]['len'] == 1):
+                one_email = user_rec[0]['result'][0]['one_email']
+                nickname = user_rec[0]['result'][0]['name']
+
             res = {
                 "type": True,
                 "message": "success",
@@ -116,9 +127,9 @@ class My_mqtt(Resource):
                 "result": [
                     {
                         "door": "open_success",
-                        "one_email": "",
+                        "one_email": one_email,
                         "one_id": one_id,
-                        "nickname": ""
+                        "nickname": nickname
                     }
                 ]
             }

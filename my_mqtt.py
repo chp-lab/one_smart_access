@@ -105,6 +105,11 @@ class My_mqtt(Resource):
                 print(TAG, "You don't know the trust!")
                 return module.unauthorized()
 
+            room_cmd = """SELECT rooms.building FROM rooms WHERE rooms.room_num='%s'""" %(room_num)
+            room_rec = database.getData(room_cmd)
+            if(room_rec[0]['len'] == 0):
+                return module.measurementNotFound()
+            
             print(TAG, "unlocking")
             self.unlock(room_num)
             print(TAG, "unlock complete")

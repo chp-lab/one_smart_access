@@ -22,14 +22,16 @@ class Hooking(Resource):
                 [
                 {
                     "label": "เข้าพื้นที่",
-                    "type": "link",
+                    "type": "webview",
+                    "size": "full",
                     "url": web_vue_url1,
                     "sign": "false",
                     "onechat_token": "true"
                 },
                 {
                     "label": "จัดการห้อง",
-                    "type": "link",
+                    "type": "webview",
+                    "size": "full",
                     "url": web_vue_url1,
                     "sign": "false",
                     "onechat_token": "true"
@@ -51,28 +53,13 @@ class Hooking(Resource):
                     "type": "text",
                     "message": "ขอดูคำเชิญ",
                     "payload": "invite"
-                },
+                }
                 # {
                 #     "label": "ขอกุญแจที่ถูกเชิญ",
                 #     "type": "text",
                 #     "message": "ขอ QR Code ที่ถูกเชิญ",
                 #     "payload": "guest_req"
-                # }
-                {
-                    "label": "Unit test",
-                    "type": "webview",
-                    "url": web_vue_url1,
-                    "size": "full",
-                    "sign": "false",
-                    "onechat_token": "true"
-                },
-                {
-                    "label": "Game",
-                    "type": "link",
-                    "url": "http://18.140.173.239:8082",
-                    "sign": "false",
-                    "onechat_token": "true"
-                },
+                # },
                 # {
                 #     "label": "OBox",
                 #     "type": "webview",
